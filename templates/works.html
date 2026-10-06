@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Works | Jezrel</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <style>
+
+        /* =========================
+           GENERAL
+        ========================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: 'Quicksand', sans-serif;
+
+            color: #4f4f4f;
+
+            /* LIGHT BLUE POLKA DOT BACKGROUND */
+            background-color: #ccefff;
+
+            background-image:
+                radial-gradient(circle, #f7b6d9 6px, transparent 7px),
+                radial-gradient(circle, #fff2a8 6px, transparent 7px),
+                radial-gradient(circle, #c9e9b7 6px, transparent 7px);
+
+            background-size: 90px 90px;
+            background-position:
+                0 0,
+                30px 30px,
+                60px 60px;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           NAVIGATION BAR
+        ========================== */
+
+        nav {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(8px);
+
+            padding: 15px 0;
+
+            border-bottom: 3px solid #9edbf0;
+
+            position: relative;
+            z-index: 20;
+        }
+
+        nav ul {
+            list-style: none;
+
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 45px;
+        }
+
+        nav a {
+            text-decoration: none;
+
+            color: #55bfe5;
+
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+        nav a:hover {
+            color: #e85da8;
+        }
+
+
+        /* =========================
+           SIDE DECORATIONS
+        ========================== */
+
+        .decorations {
+            position: absolute;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: 1;
+
+            overflow: hidden;
+        }
+
+        .spiral,
+        .flower {
+            position: absolute;
+            user-select: none;
+        }
+
+        .spiral {
+            color: #55bfe5;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 58px;
+            font-weight: 500;
+            opacity: 0.9;
+            text-shadow: 2px 3px 0 rgba(255, 255, 255, 0.75);
+        }
+
+        .p1 {
+            top: 23%;
+            left: 3%;
+            transform: rotate(-18deg);
+        }
+
+        .p2 {
+            top: 43%;
+            right: 3%;
+            transform: rotate(20deg);
+        }
+
+        .p3 {
+            top: 65%;
+            left: 5%;
+            transform: rotate(12deg);
+        }
+
+        .p4 {
+            bottom: 12%;
+            right: 8%;
+            transform: rotate(-18deg);
+        }
+
+        .p5 {
+            top: 17%;
+            right: 30%;
+            transform: rotate(22deg);
+        }
+
+        .flower {
+            font-size: 44px;
+            filter: drop-shadow(2px 3px 1px rgba(90, 130, 100, 0.16));
+        }
+
+        .f1 {
+            top: 30%;
+            right: 8%;
+            transform: rotate(-12deg);
+        }
+
+        .f2 {
+            top: 51%;
+            left: 9%;
+            transform: rotate(10deg);
+        }
+
+        .f3 {
+            bottom: 10%;
+            left: 29%;
+            transform: rotate(15deg);
+        }
+
+        .f4 {
+            top: 16%;
+            left: 30%;
+            transform: rotate(-15deg);
+        }
+
+        .f5 {
+            bottom: 18%;
+            right: 28%;
+            transform: rotate(8deg);
+        }
+
+        .star {
+            position: absolute;
+
+            color: #65b957;
+
+            font-family: 'Fredoka', sans-serif;
+
+            font-size: 65px;
+
+            font-weight: 600;
+
+            text-shadow:
+                2px 3px 0 rgba(190, 140, 20, 0.25),
+                0 0 5px rgba(255, 255, 255, 0.9);
+        }
+
+
+        /* Five large scattered stars */
+
+        .s1 {
+            top: 9%;
+            right: 6%;
+
+            font-size: 78px;
+
+            transform: rotate(12deg);
+        }
+
+        .s2 {
+            top: 20%;
+            right: 15%;
+
+            font-size: 55px;
+
+            transform: rotate(-15deg);
+        }
+
+        .s3 {
+            top: 39%;
+            right: 5%;
+
+            font-size: 68px;
+
+            transform: rotate(18deg);
+        }
+
+        .s4 {
+            bottom: 18%;
+            left: 6%;
+
+            font-size: 76px;
+
+            transform: rotate(-12deg);
+        }
+
+        .s5 {
+            bottom: 7%;
+            left: 16%;
+
+            font-size: 57px;
+
+            transform: rotate(17deg);
+        }
+
+
+        /* =========================
+           MAIN WORKS AREA
+        ========================== */
+
+        .works-page {
+            position: relative;
+
+            z-index: 5;
+
+            width: 90%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+
+            padding: 60px 0 75px;
+
+            text-align: center;
+        }
+
+
+        /* =========================
+           PAGE TITLE
+        ========================== */
+
+        .works-page h1 {
+            margin: 0;
+
+            font-family: 'Fredoka', sans-serif;
+
+            font-size: 50px;
+            font-weight: 700;
+
+            color: #65b957;
+
+            letter-spacing: 1px;
+
+            text-shadow:
+                2px 3px 0 rgba(190, 145, 25, 0.25);
+        }
+
+
+        /* =========================
+           DESCRIPTION CARD
+        ========================== */
+
+        .intro-card {
+            display: inline-block;
+
+            margin-top: 18px;
+
+            padding: 12px 24px;
+
+            background: rgba(255, 255, 255, 0.78);
+
+            border: 2px solid rgba(255, 255, 255, 0.95);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 14px rgba(100, 170, 200, 0.18);
+
+            font-size: 17px;
+
+            font-weight: 500;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           WORKS CONTAINER
+        ========================== */
+
+        .works-container {
+            display: flex;
+
+            justify-content: center;
+            align-items: stretch;
+
+            gap: 28px;
+
+            margin-top: 48px;
+
+            flex-wrap: wrap;
+        }
+
+
+        /* =========================
+           WORK CARDS
+        ========================== */
+
+        .work-card {
+            width: 285px;
+
+            min-height: 190px;
+
+            padding: 28px 25px;
+
+            background: #f8c8db;
+
+            border: 3px solid #ec83ad;
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 8px 20px rgba(80, 150, 180, 0.18);
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            transition: 0.25s;
+        }
+
+        .work-card:hover {
+            transform: translateY(-7px);
+
+            box-shadow:
+                0 13px 25px rgba(80, 150, 180, 0.25);
+        }
+
+
+        /* =========================
+           CARD TITLES
+        ========================== */
+
+        .work-card h2 {
+            margin: 0 0 13px;
+
+            font-family: 'Fredoka', sans-serif;
+
+            font-size: 24px;
+
+            font-weight: 600;
+
+            color: #65b957;
+
+            text-shadow:
+                1px 2px 0 rgba(190, 145, 25, 0.18);
+        }
+
+
+        /* =========================
+           CARD DESCRIPTION
+        ========================== */
+
+        .work-card p {
+            margin: 0;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+            text-align: center;
+        }
+
+        .work-button {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .work-button:hover,
+        .work-button:focus-visible {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .decorations {
+                display: none;
+            }
+
+            .works-page {
+                width: 88%;
+            }
+
+            .works-container {
+                gap: 22px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            nav ul {
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .works-page {
+                padding-top: 40px;
+            }
+
+            .works-page h1 {
+                font-size: 40px;
+            }
+
+            .intro-card {
+                font-size: 15px;
+
+                padding: 11px 18px;
+            }
+
+            .work-card {
+                width: 100%;
+
+                max-width: 330px;
+            }
+        }
+
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+        <ul>
+            <li><a href="/">HOME</a></li>
+            <li><a href="/profile">PROFILE</a></li>
+            <li><a href="/works">WORKS</a></li>
+            <li><a href="/contact">CONTACTS</a></li>
+        </ul>
+    </nav>
+
+
+
+    <!-- =========================
+         DECORATIONS
+    ========================== -->
+
+    <div class="decorations" aria-hidden="true">
+
+        <div class="spiral p1">꩜</div>
+        <div class="spiral p2">꩜</div>
+        <div class="spiral p3">꩜</div>
+        <div class="spiral p4">꩜</div>
+        <div class="spiral p5">꩜</div>
+
+        <div class="star s1">✦</div>
+        <div class="star s2">✦</div>
+        <div class="star s3">✦</div>
+        <div class="star s4">✦</div>
+        <div class="star s5">✦</div>
+
+        <div class="flower f1">🌸</div>
+        <div class="flower f2">🌸</div>
+        <div class="flower f3">🌸</div>
+        <div class="flower f4">🌸</div>
+        <div class="flower f5">🌸</div>
+
+    </div>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="works-page">
+
+        <h1>MY WORKS</h1>
+
+
+        <div class="intro-card">
+            Here are some of my programming works and activities.
+        </div>
+
+
+        <!-- =========================
+             WORK CARDS
+        ========================== -->
+
+        <div class="works-container">
+
+
+            <!-- AREA OF CIRCLE -->
+
+            <div class="work-card">
+                
+                 <h2>Area of a Circle</h2>
+                 <p>A simple Python program that calculates the area of a circle using its radius.</p>
+
+                 <a href="/works/area/circle" class="work-button">View Work</a>
+            </div>
+
+            <!-- AREA OF TRIANGLE -->
+
+            <div class="work-card">
+                <h2>Area of a Triangle</h2>
+                <p>A Python program that calculates the area of a triangle using its base and height.</p>
+
+                <a href="/works/area/triangle" class="work-button">View Work</a>
+
+            </div>
+
+
+
+            <!-- LINKED LIST -->
+
+            <div class="work-card">
+
+                <h2>Linked List</h2>
+
+                <p>
+                    Explore and interact with different linked list operations.
+                </p>
+
+                <a href="/works/linked-list" class="work-button">Open Linked List</a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

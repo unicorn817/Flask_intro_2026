@@ -1,28 +1,669 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home Page</title>
+    <title>Jezrel | Home</title>
+
+    <!-- Whimsical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Quicksand', sans-serif;
+            color: #38545c;
+
+            background: linear-gradient(
+                to bottom,
+                #b9ebff 0%,
+                #d9f7ff 52%,
+                #efffdc 76%,
+                #a8df7b 100%
+            );
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           NAVIGATION BAR
+        ========================== */
+
+        nav {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(8px);
+
+            padding: 15px 0;
+
+            border-bottom: 3px solid #f7b6d9;
+
+            position: relative;
+            z-index: 20;
+        }
+
+        nav ul {
+            list-style: none;
+
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 45px;
+        }
+
+        nav a {
+            text-decoration: none;
+
+            color: #e85da8;
+
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+        nav a:hover {
+            color: #65b957;
+        }
+
+
+        /* =========================
+           CLOUDS
+           Upper sky only
+        ========================== */
+
+        .cloud {
+            position: absolute;
+
+            background: rgba(255, 255, 255, 0.78);
+
+            width: 115px;
+            height: 34px;
+
+            border-radius: 50px;
+
+            z-index: 1;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: "";
+
+            position: absolute;
+
+            background: rgba(255, 255, 255, 0.78);
+
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 48px;
+            height: 48px;
+
+            left: 18px;
+            bottom: 5px;
+        }
+
+        .cloud::after {
+            width: 62px;
+            height: 62px;
+
+            right: 15px;
+            bottom: 2px;
+        }
+
+        .cloud1 {
+            top: 105px;
+            left: 5%;
+            transform: scale(0.9);
+        }
+
+        .cloud2 {
+            top: 145px;
+            left: 28%;
+            transform: scale(0.65);
+        }
+
+        .cloud3 {
+            top: 115px;
+            right: 27%;
+            transform: scale(0.75);
+        }
+
+        .cloud4 {
+            top: 165px;
+            right: 5%;
+            transform: scale(0.95);
+        }
+
+        .cloud5 {
+            top: 215px;
+            left: 12%;
+            transform: scale(0.55);
+            opacity: 0.65;
+        }
+
+        .cloud6 {
+            top: 205px;
+            right: 13%;
+            transform: scale(0.6);
+            opacity: 0.65;
+        }
+
+
+        /* =========================
+           STARS
+        ========================== */
+
+        .star {
+            position: absolute;
+
+            color: #f3d76b;
+
+            z-index: 3;
+
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        .star1 {
+            top: 190px;
+            left: 18%;
+
+            font-size: 25px;
+        }
+
+        .star2 {
+            top: 255px;
+            left: 8%;
+
+            font-size: 18px;
+        }
+
+        .star3 {
+            top: 205px;
+            right: 19%;
+
+            font-size: 28px;
+        }
+
+        .star4 {
+            top: 300px;
+            right: 8%;
+
+            font-size: 19px;
+        }
+
+        .star5 {
+            top: 370px;
+            left: 16%;
+
+            font-size: 17px;
+        }
+
+        .star6 {
+            top: 390px;
+            right: 17%;
+
+            font-size: 22px;
+        }
+
+        @keyframes float {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+        }
+
+
+        /* =========================
+           SPIRALS
+        ========================== */
+
+        .spiral {
+            position: absolute;
+
+            color: #df8fc1;
+
+            opacity: 0.65;
+
+            z-index: 3;
+
+            animation: spiralFloat 5s ease-in-out infinite;
+        }
+
+        .spiral1 {
+            top: 235px;
+            left: 5%;
+
+            font-size: 42px;
+        }
+
+        .spiral2 {
+            top: 320px;
+            left: 12%;
+
+            font-size: 27px;
+        }
+
+        .spiral3 {
+            top: 180px;
+            right: 7%;
+
+            font-size: 34px;
+        }
+
+        .spiral4 {
+            top: 275px;
+            right: 14%;
+
+            font-size: 45px;
+        }
+
+        .spiral5 {
+            top: 430px;
+            left: 8%;
+
+            font-size: 25px;
+        }
+
+        .spiral6 {
+            top: 440px;
+            right: 8%;
+
+            font-size: 30px;
+        }
+
+        @keyframes spiralFloat {
+
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(8deg);
+            }
+
+        }
+
+
+        /* =========================
+           MAIN HERO
+        ========================== */
+
+        .hero {
+
+            min-height: 650px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            position: relative;
+
+            z-index: 5;
+
+            padding: 65px 20px 155px;
+        }
+
+
+        /* Unicorn */
+
+        .unicorn {
+
+            font-size: 100px;
+
+            filter:
+                drop-shadow(
+                    0 8px 8px
+                    rgba(170, 100, 170, 0.25)
+                );
+
+            animation:
+                unicornFloat
+                3s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes unicornFloat {
+
+            0%, 100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(2deg);
+            }
+
+        }
+
+
+        /* =========================
+           TEXT
+        ========================== */
+
+        h1 {
+
+            margin: 15px 0 12px;
+
+            font-family: 'Fredoka', sans-serif;
+
+            font-size: 48px;
+            font-weight: 700;
+
+            color: #e85da8;
+
+            text-shadow:
+                2px 3px 0 white;
+        }
+
+        .highlight {
+            color: #65b957;
+        }
+
+        .hero p {
+
+            max-width: 650px;
+
+            margin: 8px auto;
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #46636a;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================== */
+
+        .button {
+
+            display: inline-block;
+
+            margin-top: 28px;
+
+            padding: 13px 30px;
+
+            background: #f5b6d7;
+
+            color: white;
+
+            border: 3px solid white;
+
+            border-radius: 30px;
+
+            text-decoration: none;
+
+            font-family: 'Fredoka', sans-serif;
+
+            font-size: 17px;
+            font-weight: 600;
+
+            box-shadow:
+                0 6px 0 #d987b2;
+
+            transition: 0.2s;
+        }
+
+        .button:hover {
+
+            background: #9bd887;
+
+            box-shadow:
+                0 6px 0 #70b85b;
+
+            transform:
+                translateY(-3px);
+        }
+
+
+        /* =========================
+           GRASS
+        ========================== */
+
+        .grass {
+
+            position: absolute;
+
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 125px;
+
+            background: #9bd875;
+
+            border-top:
+                5px solid #c7ee91;
+
+            z-index: 2;
+        }
+
+
+        /* =========================
+           FLOWERS
+        ========================== */
+
+        .flower {
+
+            position: absolute;
+
+            z-index: 8;
+
+            animation:
+                flowerFloat
+                4s
+                ease-in-out
+                infinite;
+        }
+
+        .flower1 {
+
+            bottom: 53px;
+            left: 13%;
+
+            font-size: 34px;
+        }
+
+        .flower2 {
+
+            bottom: 68px;
+            left: 27%;
+
+            font-size: 27px;
+        }
+
+        .flower3 {
+
+            bottom: 50px;
+            right: 15%;
+
+            font-size: 36px;
+        }
+
+        .flower4 {
+
+            bottom: 72px;
+            right: 28%;
+
+            font-size: 27px;
+        }
+
+        .flower5 {
+
+            bottom: 43px;
+            left: 42%;
+
+            font-size: 25px;
+        }
+
+        .flower6 {
+
+            bottom: 48px;
+            right: 41%;
+
+            font-size: 23px;
+        }
+
+        @keyframes flowerFloat {
+
+            0%, 100% {
+                transform: rotate(-4deg);
+            }
+
+            50% {
+                transform: rotate(4deg);
+            }
+
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 </head>
+
+
 <body>
-    <h1>Welcome to Our Website</h1>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
 
     <nav>
+
         <ul>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/works">Works</a></li>
-            <li><a href="/contact">Contact</a></li>
+
+            <li>
+                <a href="/">HOME</a>
+            </li>
+
+            <li>
+                <a href="/profile">PROFILE</a>
+            </li>
+
+            <li>
+                <a href="/works">WORKS</a>
+            </li>
+
+            <li>
+                <a href="/contact">CONTACTS</a>
+            </li>
+
         </ul>
+
     </nav>
 
 
-    <h1>Welcome to my programming works</h1>
-    <p>Instruction: create a route and a page for the link that are not working</p>
+    <!-- =========================
+         CLOUDS
+    ========================== -->
 
-    <ul>
-        <li><a href="/works">toUpperCase</a></li>
-        <li><a href="/works/area/circle">Area of a Circle</a></li>
-        <li><a href="/works/area/triangle">Area of a Triangle</a></li>
-    </ul>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="cloud cloud4"></div>
+    <div class="cloud cloud5"></div>
+    <div class="cloud cloud6"></div>
+
+
+    <!-- =========================
+         STARS
+    ========================== -->
+
+    <div class="star star1">✦</div>
+    <div class="star star2">✧</div>
+    <div class="star star3">✦</div>
+    <div class="star star4">✧</div>
+    <div class="star star5">✦</div>
+    <div class="star star6">✧</div>
+
+
+    <!-- =========================
+         SPIRALS
+    ========================== -->
+
+    <div class="spiral spiral1">🌀</div>
+    <div class="spiral spiral2">🌀</div>
+    <div class="spiral spiral3">🌀</div>
+    <div class="spiral spiral4">🌀</div>
+    <div class="spiral spiral5">🌀</div>
+    <div class="spiral spiral6">🌀</div>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <section class="hero">
+
+        <div class="unicorn">
+            🦄
+        </div>
+
+        <h1>
+            Welcome to <span class="highlight">my</span> website!
+        </h1>
+
+        <p>
+            Hi! I am <strong>Jezrel</strong>, a Computer Engineering
+            student passionate about technology, creativity,
+            and learning new things.
+        </p>
+
+        <p>
+            This website showcases my profile, programming works,
+            and my journey as a student in technology.
+        </p>
+
+        <a class="button" href="/profile">
+            ✿ Get to Know Me ✿
+        </a>
+
+    </section>
+
+
+    <!-- =========================
+         GRASS
+    ========================== -->
+
+    <div class="grass"></div>
+
+
+    <!-- =========================
+         FLOWERS
+    ========================== -->
+
+    <div class="flower flower1">🌼</div>
+    <div class="flower flower2">🌸</div>
+    <div class="flower flower3">🌻</div>
+    <div class="flower flower4">🌷</div>
+    <div class="flower flower5">🌼</div>
+    <div class="flower flower6">🌸</div>
+
+
 </body>
 </html>
-

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #4f4f4f;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #ccefff;
+            background-image:
+                radial-gradient(circle, #f7b6d9 6px, transparent 7px),
+                radial-gradient(circle, #fff2a8 6px, transparent 7px),
+                radial-gradient(circle, #c9e9b7 6px, transparent 7px);
+            background-size: 90px 90px;
+            background-position: 0 0, 30px 30px, 60px 60px;
+        }
+
+        nav {
+            position: relative;
+            z-index: 2;
+            padding: 15px 0;
+            border-bottom: 3px solid #9edbf0;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(8px);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 45px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: #55bfe5;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            color: #e85da8;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(90%, 950px);
+            margin: 0 auto;
+            padding: 56px 0 72px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            color: #65b957;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 50px;
+            font-weight: 700;
+            text-shadow: 2px 3px 0 rgba(190, 145, 25, 0.25);
+        }
+
+        .intro {
+            display: inline-block;
+            margin: 18px 0 0;
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.78);
+            box-shadow: 0 5px 14px rgba(100, 170, 200, 0.18);
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
+            gap: 24px;
+            margin-top: 42px;
+            text-align: left;
+        }
+
+        .panel {
+            min-width: 0;
+            padding: 28px;
+            border: 3px solid #ec83ad;
+            border-radius: 24px;
+            background: #f8c8db;
+            box-shadow: 0 8px 20px rgba(80, 150, 180, 0.18);
+        }
+
+        h2 {
+            margin: 0 0 22px;
+            color: #65b957;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 25px;
+            font-weight: 600;
+            text-shadow: 1px 2px 0 rgba(190, 145, 25, 0.18);
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .field[hidden] {
+            display: none;
+        }
+
+        select,
+        input {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 2px solid #e99abb;
+            border-radius: 10px;
+            background: #fff;
+            color: #4f4f4f;
+            font: 500 16px 'Quicksand', sans-serif;
+        }
+
+        select:focus-visible,
+        input:focus-visible,
+        button:focus-visible,
+        .back-link:focus-visible {
+            outline: 3px solid #55bfe5;
+            outline-offset: 2px;
+        }
+
+        button {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 4px;
+            border: 0;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            cursor: pointer;
+            font: 600 17px 'Fredoka', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+        .status {
+            margin: 18px 0 0;
+            padding: 12px 14px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .status.error {
+            border-color: #e99abb;
+            color: #9f3d67;
+        }
+
+        .list-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .list-heading h2 {
+            margin: 0;
+        }
+
+        .count {
+            color: #647c63;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .node-chain {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 0;
+            margin: 0;
+            padding: 8px 0;
+            list-style: none;
+        }
+
+        .node-chain li {
+            display: flex;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .node {
+            display: block;
+            max-width: min(100%, 190px);
+            overflow-wrap: anywhere;
+            padding: 11px 14px;
+            border: 2px solid #9edbf0;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 0 rgba(85, 191, 229, 0.24);
+            font-weight: 700;
+        }
+
+        .node.match {
+            border-color: #65b957;
+            background: #eff9e9;
+            box-shadow: 0 4px 0 rgba(101, 185, 87, 0.28);
+        }
+
+        .node-chain li:not(:last-child)::after {
+            content: '→';
+            padding: 0 9px;
+            color: #55bfe5;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            margin: 0;
+            padding: 20px 14px;
+            border: 2px dashed #e99abb;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.55);
+            color: #6b6870;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #388bb0;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #e85da8;
+        }
+
+        @media (max-width: 720px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            main {
+                width: 88%;
+                padding-top: 40px;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            .intro {
+                padding: 11px 18px;
+                font-size: 15px;
+            }
+
+            .workspace {
+                margin-top: 30px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="/">HOME</a></li>
+            <li><a href="/profile">PROFILE</a></li>
+            <li><a href="/works">WORKS</a></li>
+            <li><a href="/contact">CONTACTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="page-motifs" aria-hidden="true">
+            <span class="motif-spiral">꩜</span>
+            <span class="motif-star">✦</span>
+            <span class="motif-flower">🌸</span>
+        </div>
+        <h1>LINKED LIST</h1>
+        <p class="intro">Build a chain, one node at a time.</p>
+
+        <div class="workspace">
+            <section class="panel" aria-labelledby="operation-title">
+                <h2 id="operation-title">Operations</h2>
+                <form action="/works/linked-list" method="post">
+                    {% for item in values %}
+                    <input type="hidden" name="items" value="{{ item }}">
+                    {% endfor %}
+
+                    <label class="field" for="action">
+                        Choose an operation
+                        <select id="action" name="action" required>
+                            <option value="insert_at_end" {% if selected_action == 'insert_at_end' %}selected{% endif %}>Add to end</option>
+                            <option value="insert_at_beginning" {% if selected_action == 'insert_at_beginning' %}selected{% endif %}>Add to beginning</option>
+                            <option value="insert_after" {% if selected_action == 'insert_after' %}selected{% endif %}>Insert after a value</option>
+                            <option value="remove_beginning" {% if selected_action == 'remove_beginning' %}selected{% endif %}>Remove first node</option>
+                            <option value="remove_at_end" {% if selected_action == 'remove_at_end' %}selected{% endif %}>Remove last node</option>
+                            <option value="remove_value" {% if selected_action == 'remove_value' %}selected{% endif %}>Remove a value</option>
+                            <option value="search" {% if selected_action == 'search' %}selected{% endif %}>Search for a value</option>
+                        </select>
+                    </label>
+
+                    <label class="field" id="value-field" for="value">
+                        <span id="value-label">Value</span>
+                        <input id="value" name="value" type="text" maxlength="80" autocomplete="off" placeholder="Enter a node value">
+                    </label>
+
+                    <label class="field" id="target-field" for="target" hidden>
+                        Insert after
+                        <input id="target" name="target" type="text" maxlength="80" autocomplete="off" placeholder="Existing node value">
+                    </label>
+
+                    <button type="submit">Run operation</button>
+                </form>
+
+                {% if message %}
+                <p class="status {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
+            </section>
+
+            <section class="panel" aria-labelledby="list-title">
+                <div class="list-heading">
+                    <h2 id="list-title">Your nodes</h2>
+                    <span class="count">{{ values|length }} {% if values|length == 1 %}node{% else %}nodes{% endif %}</span>
+                </div>
+
+                {% if values %}
+                <ol class="node-chain" aria-label="Linked list" role="list">
+                    {% for item in values %}
+                    <li><span class="node{% if match_value is not none and item == match_value %} match{% endif %}">{{ item }}</span></li>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                <p class="empty-state">The list is empty.</p>
+                {% endif %}
+            </section>
+        </div>
+
+        <a class="back-link" href="/works">Back to My Works</a>
+    </main>
+
+    <script>
+        const actionSelect = document.getElementById('action');
+        const valueField = document.getElementById('value-field');
+        const valueInput = document.getElementById('value');
+        const targetField = document.getElementById('target-field');
+        const targetInput = document.getElementById('target');
+
+        function updateOperationFields() {
+            const action = actionSelect.value;
+            const needsValue = !['remove_beginning', 'remove_at_end'].includes(action);
+            const needsTarget = action === 'insert_after';
+
+            valueField.hidden = !needsValue;
+            valueInput.required = needsValue;
+            targetField.hidden = !needsTarget;
+            targetInput.required = needsTarget;
+        }
+
+        actionSelect.addEventListener('change', updateOperationFields);
+        updateOperationFields();
+    </script>
+</body>
+</html>

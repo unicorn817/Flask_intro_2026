@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area of a Circle | Jezrel</title>
+    <title>Area of a Triangle | Jezrel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -102,6 +102,10 @@
             text-align: left;
         }
 
+        .input-group {
+            margin-bottom: 18px;
+        }
+
         label {
             display: block;
             margin-bottom: 10px;
@@ -127,7 +131,7 @@
         button {
             width: 100%;
             min-height: 48px;
-            margin-top: 16px;
+            margin-top: 4px;
             border: 0;
             border-radius: 12px;
             background: #65b957;
@@ -199,18 +203,26 @@
             <span class="motif-star">✦</span>
             <span class="motif-flower">🌸</span>
         </div>
-        <h1>AREA OF A CIRCLE</h1>
-        <p class="intro">Enter a radius to calculate the area of a circle.</p>
+        <h1>AREA OF A TRIANGLE</h1>
+        <p class="intro">Enter the base and height to calculate the area.</p>
 
-        <section class="calculator" aria-label="Circle area calculator">
-            <form action="/works/area/circle" method="post">
-                <label for="radius">Radius</label>
-                <input type="number" id="radius" name="radius" min="0" step="any" required>
-                <button type="submit">Compute area</button>
+        <section class="calculator" aria-label="Triangle area calculator">
+            <form action="/works/area/triangle" method="post">
+                <div class="input-group">
+                    <label for="base">Base</label>
+                    <input type="number" id="base" name="base" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="height">Height</label>
+                    <input type="number" id="height" name="height" step="any" required>
+                </div>
+
+                <button type="submit">Calculate area</button>
             </form>
 
             {% if result is not none %}
-            <p class="result" role="status">Area of the circle: {{ result }}</p>
+            <p class="result" role="status">Area of the triangle: {{ result }}</p>
             {% endif %}
         </section>
 

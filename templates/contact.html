@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7b6d9">
+    <title>Contact | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            color: #344b52;
+            font-family: 'Quicksand', sans-serif;
+            background: #bde8db;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            background: linear-gradient(118deg, #f7b6d9 0%, #c9e9b7 34%, #a9def0 68%, #fff2a8 100%);
+        }
+
+        nav {
+            position: relative;
+            z-index: 2;
+            padding: 15px 0;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(8px);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 45px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: #388e9f;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            color: #d94e91;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+            align-items: center;
+            gap: 64px;
+            width: min(1160px, calc(100% - 64px));
+            min-height: calc(100vh - 59px);
+            margin: 0 auto;
+            padding: 54px 0 68px;
+        }
+
+        .contact-copy {
+            max-width: 610px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin: 0 0 16px;
+            padding: 7px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.52);
+            color: #468d6b;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            max-width: 590px;
+            margin: 0;
+            color: #315d50;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 58px;
+            font-weight: 700;
+            line-height: 1.06;
+            text-shadow: 2px 3px 0 rgba(255, 255, 255, 0.55);
+        }
+
+        .intro {
+            max-width: 480px;
+            margin: 18px 0 28px;
+            color: #415e61;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.65;
+        }
+
+        .contact-list {
+            display: grid;
+            gap: 9px;
+        }
+
+        .contact-link {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr) 28px;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+            padding: 10px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.68);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.42);
+            color: inherit;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        a.contact-link:hover,
+        a.contact-link:focus-visible {
+            transform: translateX(4px);
+            background: rgba(255, 255, 255, 0.78);
+            box-shadow: 0 5px 14px rgba(62, 113, 116, 0.12);
+            outline: none;
+        }
+
+        a.contact-link:focus-visible {
+            outline: 3px solid #368e9e;
+            outline-offset: 2px;
+        }
+
+        .contact-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.72);
+            color: #398b9c;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .contact-text {
+            min-width: 0;
+        }
+
+        .contact-label {
+            display: block;
+            margin-bottom: 2px;
+            color: #59806c;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .contact-value {
+            display: block;
+            overflow-wrap: anywhere;
+            color: #344b52;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .contact-arrow {
+            justify-self: end;
+            color: #398b9c;
+            font-size: 20px;
+        }
+
+        .unicorn-scene {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: min(100%, 440px);
+            aspect-ratio: 1;
+            justify-self: center;
+        }
+
+        .unicorn-scene::before {
+            position: absolute;
+            inset: 5%;
+            border: 2px dashed rgba(255, 255, 255, 0.78);
+            border-radius: 50%;
+            content: '';
+            transform: rotate(-12deg);
+        }
+
+        .unicorn-scene::after {
+            position: absolute;
+            inset: 14%;
+            border: 1px solid rgba(255, 255, 255, 0.54);
+            border-radius: 50%;
+            content: '';
+        }
+
+        .unicorn {
+            position: relative;
+            z-index: 1;
+            display: block;
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
+            font-size: 230px;
+            line-height: 1;
+            filter: drop-shadow(0 18px 12px rgba(84, 102, 108, 0.18));
+            animation: unicorn-float 4s ease-in-out infinite;
+        }
+
+        .sparkle {
+            position: absolute;
+            z-index: 1;
+            color: #fff;
+            font-family: 'Fredoka', sans-serif;
+            text-shadow: 0 2px 8px rgba(77, 138, 147, 0.3);
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        .sparkle-one {
+            top: 16%;
+            left: 17%;
+            color: #fff;
+            font-size: 44px;
+        }
+
+        .sparkle-two {
+            top: 28%;
+            right: 12%;
+            color: #ffe26f;
+            font-size: 34px;
+            animation-delay: 0.7s;
+        }
+
+        .sparkle-three {
+            right: 18%;
+            bottom: 18%;
+            color: #ec87b7;
+            font-size: 48px;
+            animation-delay: 1.2s;
+        }
+
+        .sparkle-four {
+            bottom: 22%;
+            left: 12%;
+            color: #6fc7d4;
+            font-size: 29px;
+            animation-delay: 1.6s;
+        }
+
+        @keyframes unicorn-float {
+            0%, 100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0.68;
+                transform: scale(0.9) rotate(-8deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.12) rotate(8deg);
+            }
+        }
+
+        @media (max-width: 850px) {
+            main {
+                grid-template-columns: minmax(0, 1fr) minmax(250px, 0.8fr);
+                gap: 28px;
+                width: min(100% - 40px, 720px);
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            .unicorn {
+                font-size: 180px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            nav ul {
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                width: min(100% - 36px, 520px);
+                padding: 38px 0 52px;
+            }
+
+            h1 {
+                font-size: 44px;
+            }
+
+            .intro {
+                margin: 13px 0 20px;
+                font-size: 16px;
+            }
+
+            .unicorn-scene {
+                grid-row: 1;
+                width: min(72%, 270px);
+                margin-bottom: 4px;
+            }
+
+            .contact-copy {
+                display: contents;
+            }
+
+            .eyebrow,
+            h1,
+            .intro,
+            .contact-list {
+                grid-column: 1;
+            }
+
+            .eyebrow {
+                grid-row: 2;
+                justify-self: start;
+                margin-bottom: 4px;
+            }
+
+            h1 {
+                grid-row: 3;
+            }
+
+            .intro {
+                grid-row: 4;
+            }
+
+            .contact-list {
+                grid-row: 5;
+            }
+
+            .unicorn {
+                font-size: 150px;
+            }
+
+            .contact-link {
+                grid-template-columns: 40px minmax(0, 1fr) 22px;
+                gap: 10px;
+                padding: 9px 10px;
+            }
+
+            .contact-icon {
+                width: 38px;
+                height: 38px;
+            }
+
+            .contact-value {
+                font-size: 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="/">HOME</a></li>
+            <li><a href="/profile">PROFILE</a></li>
+            <li><a href="/works">WORKS</a></li>
+            <li><a href="/contact" aria-current="page">CONTACTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="contact-copy" aria-labelledby="contact-title">
+            <p class="eyebrow">A LITTLE MAGIC, A HELLO AWAY</p>
+            <h1 id="contact-title">Let's make something magical.</h1>
+            <p class="intro">Have a question, an idea, or just want to say hello? Pick your favorite way to reach me.</p>
+
+            <div class="contact-list" aria-label="Contact information">
+                <a class="contact-link" href="mailto:jezrellabong0817@gmail.com">
+                    <span class="contact-icon" aria-hidden="true">@</span>
+                    <span class="contact-text">
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value">jezrellabong0817@gmail.com</span>
+                    </span>
+                    <span class="contact-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="contact-link" href="tel:09622573244">
+                    <span class="contact-icon" aria-hidden="true">☎</span>
+                    <span class="contact-text">
+                        <span class="contact-label">Phone</span>
+                        <span class="contact-value">09622573244</span>
+                    </span>
+                    <span class="contact-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="contact-link" href="https://www.facebook.com/search/top/?q=Jezrel%20Labong" target="_blank" rel="noopener noreferrer" aria-label="Search Facebook for Jezrel Labong">
+                    <span class="contact-icon" aria-hidden="true">f</span>
+                    <span class="contact-text">
+                        <span class="contact-label">Facebook</span>
+                        <span class="contact-value">Jezrel Labong</span>
+                    </span>
+                    <span class="contact-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="contact-link" href="https://www.instagram.com/jezlikethat_/" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon" aria-hidden="true">◎</span>
+                    <span class="contact-text">
+                        <span class="contact-label">Instagram</span>
+                        <span class="contact-value">@jezlikethat_</span>
+                    </span>
+                    <span class="contact-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="contact-link" href="https://www.linkedin.com/in/jezrel-labong-26699036b/" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon" aria-hidden="true">in</span>
+                    <span class="contact-text">
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-value">Jezrel Labong</span>
+                    </span>
+                    <span class="contact-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="contact-link" href="https://github.com/unicorn817" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon" aria-hidden="true">&lt;/&gt;</span>
+                    <span class="contact-text">
+                        <span class="contact-label">GitHub</span>
+                        <span class="contact-value">unicorn817</span>
+                    </span>
+                    <span class="contact-arrow" aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="unicorn-scene" role="img" aria-label="A magical unicorn surrounded by sparkles">
+            <span class="sparkle sparkle-one" aria-hidden="true">✦</span>
+            <span class="sparkle sparkle-two" aria-hidden="true">✧</span>
+            <span class="sparkle sparkle-three" aria-hidden="true">✦</span>
+            <span class="sparkle sparkle-four" aria-hidden="true">✧</span>
+            <span class="scene-flower">🌸</span>
+            <span class="scene-spiral">꩜</span>
+            <span class="unicorn" aria-hidden="true">🦄</span>
+        </div>
+    </main>
+</body>
+</html>

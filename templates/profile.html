@@ -1,11 +1,1000 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Profile Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | Jezrel</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            color: #315d50;
+            overflow-x: hidden;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #ffd6e7 0px,
+                    #ffd6e7 28px,
+                    #fff2a8 28px,
+                    #fff2a8 56px,
+                    #d7f3c8 56px,
+                    #d7f3c8 84px 
+                );
+        }
+
+
+        /* =========================
+            NAVIGATION BAR
+         ========================== */
+
+nav {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(8px);
+
+    padding: 15px 0;
+
+    border-bottom: 3px solid #f7b6d9;
+
+    position: relative;
+    z-index: 20;
+}
+
+nav ul {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 45px;
+}
+
+nav a {
+    text-decoration: none;
+
+    color: #65b957;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+
+    transition: 0.25s;
+}
+
+nav a:hover {
+    color: #e85da8;
+}
+
+        /* =========================
+           MAIN PAGE
+        ========================= */
+
+        .page {
+            width: min(1150px, 92%);
+            margin: 0 auto;
+            padding: 55px 0 70px;
+
+            position: relative;
+        }
+
+        /* =========================
+           SIDE DECORATIONS
+        ========================= */
+
+        .decorations {
+            position: absolute;
+            inset: 0;
+
+            pointer-events: none;
+            z-index: 1;
+
+            overflow: visible;
+        }
+
+        .star,
+        .spiral,
+        .flower {
+            position: absolute;
+            user-select: none;
+        }
+
+
+        /* =========================
+           BLUE SPIRALS
+           5 TOTAL
+        ========================= */
+
+        .spiral {
+            color: #55bfe5;
+
+            font-family: 'Fredoka', sans-serif;
+            font-size: 72px;
+            font-weight: 500;
+
+            opacity: 0.95;
+
+            text-shadow:
+                2px 3px 0 rgba(255, 255, 255, 0.75);
+        }
+
+        .p1 {
+            top: 8%;
+            left: -105px;
+            transform: rotate(-18deg);
+        }
+
+        .p2 {
+            top: 27%;
+            right: -105px;
+            transform: rotate(20deg);
+        }
+
+        .p3 {
+            top: 48%;
+            left: -115px;
+            transform: rotate(12deg);
+        }
+
+        .p4 {
+            top: 69%;
+            right: -110px;
+            transform: rotate(-18deg);
+        }
+
+        .p5 {
+            top: 90%;
+            left: -100px;
+            transform: rotate(22deg);
+        }
+
+
+        /* =========================
+           STARS
+           5 TOTAL
+        ========================= */
+
+        .star {
+            color: #f4a72b;
+
+            font-size: 48px;
+
+            text-shadow:
+                0 0 4px rgba(255, 255, 255, 0.9),
+                2px 3px 0 rgba(208, 137, 26, 0.25);
+        }
+
+        .s1 {
+            top: 17%;
+            right: -92px;
+            font-size: 55px;
+        }
+
+        .s2 {
+            top: 37%;
+            left: -85px;
+            font-size: 44px;
+        }
+
+        .s3 {
+            top: 58%;
+            right: -82px;
+            font-size: 52px;
+        }
+
+        .s4 {
+            top: 77%;
+            left: -92px;
+            font-size: 47px;
+        }
+
+        .s5 {
+            top: 96%;
+            right: -78px;
+            font-size: 45px;
+        }
+
+
+        /* =========================
+           FLOWERS
+           5 TOTAL
+        ========================= */
+
+        .flower {
+            font-size: 53px;
+
+            filter:
+                drop-shadow(2px 3px 1px rgba(90, 130, 100, 0.16));
+        }
+
+        .f1 {
+            top: 13%;
+            left: -88px;
+            transform: rotate(-12deg);
+        }
+
+        .f2 {
+            top: 32%;
+            right: -95px;
+            font-size: 58px;
+            transform: rotate(10deg);
+        }
+
+        .f3 {
+            top: 54%;
+            left: -92px;
+            font-size: 48px;
+            transform: rotate(15deg);
+        }
+
+        .f4 {
+            top: 73%;
+            right: -88px;
+            font-size: 56px;
+            transform: rotate(-15deg);
+        }
+
+        .f5 {
+            top: 88%;
+            left: -82px;
+            font-size: 50px;
+            transform: rotate(8deg);
+        }
+
+
+        /* =========================
+           ABOUT SECTION
+        ========================= */
+
+        .about-section {
+            position: relative;
+            z-index: 5;
+
+            display: flex;
+            align-items: center;
+            gap: 65px;
+
+            margin-bottom: 50px;
+        }
+
+
+        /* =========================
+           OVAL PHOTO
+        ========================= */
+
+        .photo-area {
+            width: 390px;
+            min-width: 390px;
+            height: 390px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-frame {
+            width: 245px;
+            height: 315px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+            padding: 9px;
+
+            border: 5px solid #8dcc9c;
+
+            box-shadow:
+                0 10px 0 rgba(132, 204, 156, 0.25),
+                0 15px 25px rgba(70, 130, 100, 0.15);
+
+            position: relative;
+            z-index: 4;
+
+            overflow: hidden;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+        }
+
+
+        /* =========================
+           VINES
+        ========================= */
+
+        .vines {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .vine {
+            fill: none;
+            stroke: #61a96f;
+            stroke-width: 6;
+            stroke-linecap: round;
+        }
+
+        .vine-thin {
+            fill: none;
+            stroke: #82bd7d;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+
+        /* =========================
+           SAKURA AROUND PHOTO
+        ========================= */
+
+        .sakura {
+            position: absolute;
+            z-index: 7;
+
+            font-size: 34px;
+
+            filter:
+                drop-shadow(1px 2px 1px rgba(70, 130, 90, 0.15));
+        }
+
+        .sakura.one {
+            top: 32px;
+            left: 68px;
+        }
+
+        .sakura.two {
+            top: 70px;
+            right: 45px;
+            font-size: 43px;
+        }
+
+        .sakura.three {
+            bottom: 65px;
+            left: 43px;
+            font-size: 42px;
+        }
+
+        .sakura.four {
+            bottom: 33px;
+            right: 70px;
+            font-size: 32px;
+        }
+
+        .sakura.five {
+            top: 150px;
+            left: 20px;
+            font-size: 29px;
+        }
+
+        .sakura.six {
+            top: 205px;
+            right: 20px;
+            font-size: 31px;
+        }
+
+
+        /* =========================
+           ABOUT TEXT
+        ========================= */
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 35px;
+            color: #4f9971;
+
+            margin-bottom: 18px;
+        }
+
+        .about-text p {
+            font-size: 17px;
+            line-height: 1.85;
+
+            text-align: justify;
+
+            margin-bottom: 15px;
+
+            color: #426e60;
+        }
+
+
+        /* =========================
+           BUBBLE CARDS
+        ========================= */
+
+        .info-grid {
+            position: relative;
+            z-index: 5;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+
+            margin-top: 15px;
+        }
+
+        .bubble {
+            background: rgba(213, 242, 255, 0.94);
+
+            border: 3px solid #9dd9ed;
+
+            border-radius: 30px;
+
+            padding: 27px 30px;
+
+            box-shadow:
+                0 8px 0 rgba(119, 191, 215, 0.20),
+                0 12px 22px rgba(80, 150, 160, 0.12);
+
+            min-height: 150px;
+        }
+
+        .bubble h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 25px;
+
+            color: #4c91a6;
+
+            margin-bottom: 15px;
+        }
+
+        .bubble p {
+            font-size: 16px;
+            line-height: 1.7;
+
+            text-align: justify;
+
+            color: #426e60;
+        }
+
+
+        /* =========================
+           EDUCATION
+        ========================= */
+
+        .education p strong {
+            color: #ec78a8;
+        }
+
+
+        /* =========================
+           INTERESTS
+        ========================= */
+
+        .interest-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .interest {
+            background: #ffd0e2;
+
+            border: 2px solid #f2a3c1;
+
+            color: #a34f76;
+
+            padding: 8px 15px;
+
+            border-radius: 50px;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           SKILLS
+        ========================= */
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .skill {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #426e60;
+        }
+
+        .skill::before {
+            content: "✦";
+            color: #ec83ad;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           CURRENTLY LEARNING
+        ========================= */
+
+        .learning-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .learning { 
+            background: #ffd0e2;
+
+            border: 2px solid #f2a3c1;
+
+            border-radius: 20px;
+
+            padding: 12px 16px;
+
+            color: #a34f76;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1350px) {
+
+            .spiral,
+            .star,
+            .flower {
+                opacity: 0.65;
+            }
+
+            .p1,
+            .p3,
+            .p5,
+            .s2,
+            .s4,
+            .f1,
+            .f3,
+            .f5 {
+                left: -20px;
+            }
+
+            .p2,
+            .p4,
+            .s1,
+            .s3,
+            .s5,
+            .f2,
+            .f4 {
+                right: -20px;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            .spiral,
+            .star,
+            .flower {
+                display: none;
+            }
+
+            nav {
+                gap: 25px;
+            }
+
+            .about-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-text p {
+                text-align: justify;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 550px) {
+
+            nav {
+                height: auto;
+                padding: 18px 10px;
+
+                flex-wrap: wrap;
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 15px;
+            }
+
+            .page {
+                padding-top: 35px;
+            }
+
+            .photo-area {
+                width: 330px;
+                min-width: 330px;
+                height: 350px;
+            }
+
+            .photo-frame {
+                width: 215px;
+                height: 280px;
+            }
+
+            .about-text h2 {
+                font-size: 30px;
+            }
+
+            .about-text p {
+                font-size: 15px;
+            }
+
+            .bubble {
+                padding: 22px;
+            }
+        }
+
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 </head>
+
+
 <body>
-    <h1>Welcome to your Profile Page</h1>
-    <p>This is a simple profile page rendered using Flask's templating.</p>
-    <p>Create your profile here with Name, section , course, subject and display your favorite sayings or motto! using html tags </p>
+
+
+    <!-- =========================
+         NAVIGATION BAR
+    ========================= -->
+
+   <nav>
+    <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/profile">PROFILE</a></li>
+        <li><a href="/works">WORKS</a></li>
+        <li><a href="/contact">CONTACTS</a></li>
+    </ul>
+</nav>
+
+
+    <!-- =========================
+         MAIN PROFILE PAGE
+    ========================= -->
+
+    <main class="page">
+
+
+        <!-- =========================
+             SIDE DECORATIONS
+        ========================= -->
+
+        <div class="decorations">
+
+            <!-- 5 BLUE SPIRALS -->
+            <div class="spiral p1">꩜</div>
+            <div class="spiral p2">꩜</div>
+            <div class="spiral p3">꩜</div>
+            <div class="spiral p4">꩜</div>
+            <div class="spiral p5">꩜</div>
+
+
+            <!-- 5 STARS -->
+            <div class="star s1">✦</div>
+            <div class="star s2">✦</div>
+            <div class="star s3">✦</div>
+            <div class="star s4">✦</div>
+            <div class="star s5">✦</div>
+
+
+            <!-- 5 FLOWERS -->
+            <div class="flower f1">🌸</div>
+            <div class="flower f2">🌸</div>
+            <div class="flower f3">🌸</div>
+            <div class="flower f4">🌸</div>
+            <div class="flower f5">🌸</div>
+
+        </div>
+
+
+        <!-- =========================
+             ABOUT ME
+        ========================= -->
+
+        <section class="about-section">
+
+
+            <div class="photo-area">
+
+
+                <!-- GREEN WAVY VINES -->
+
+                <svg class="vines" viewBox="0 0 390 390">
+
+                    <path
+                        class="vine"
+                        d="M115 340
+                           C55 315, 70 270, 105 250
+                           C135 230, 130 190, 95 165
+                           C65 142, 75 105, 115 78
+                           C135 65, 145 45, 135 25"
+                    />
+
+                    <path
+                        class="vine"
+                        d="M275 25
+                           C260 55, 280 78, 310 95
+                           C340 112, 330 155, 295 175
+                           C265 195, 270 230, 305 250
+                           C340 272, 330 320, 275 345"
+                    />
+
+                    <path
+                        class="vine-thin"
+                        d="M90 300
+                           C130 280, 145 300, 150 330"
+                    />
+
+                    <path
+                        class="vine-thin"
+                        d="M300 295
+                           C265 275, 250 300, 245 330"
+                    />
+
+                </svg>
+
+
+                <!-- OVAL PHOTO -->
+
+                <div class="photo-frame">
+
+                    <img src="{{ url_for('static', filename='images/jezrel.jpg') }}" alt="Jezrel">
+
+                </div>
+
+
+                <!-- SAKURA AROUND PHOTO -->
+
+                <span class="sakura one">🌸</span>
+                <span class="sakura two">🌸</span>
+                <span class="sakura three">🌸</span>
+                <span class="sakura four">🌸</span>
+                <span class="sakura five">🌸</span>
+                <span class="sakura six">🌸</span>
+
+
+            </div>
+
+
+            <!-- ABOUT TEXT -->
+
+            <div class="about-text">
+
+                <h2>About Me</h2>
+
+                <p>
+                    I am a Computer Engineering student at the Polytechnic University
+                    of the Philippines, building a foundation in computer networking,
+                    hardware, programming, and database management.
+                </p>
+
+                <p>
+                    I also work as a freelance multimedia editor, creating video edits
+                    and poster layouts. I enjoy bringing technical problem-solving and
+                    creative work together in projects that are useful and engaging.
+                </p>
+
+                <p>
+                    I have contributed to student organizations, research, and software
+                    projects, and I am looking for hands-on opportunities to apply what
+                    I learn while continuing to grow my skills.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================
+             INFORMATION BUBBLES
+        ========================= -->
+
+        <section class="info-grid">
+
+
+            <!-- EDUCATION -->
+
+            <div class="bubble education">
+
+                <h3>Education</h3>
+
+                <p>
+                    <strong>Polytechnic University of the Philippines</strong>
+                </p>
+
+                <p>
+                    Bachelor of Science in Computer Engineering
+                </p>
+
+                <p>2025 - Present</p>
+
+                <p>
+                    President's Lister, AY 2025-2026 1st Term; Dean's Lister,
+                    AY 2025-2026 2nd Term
+                </p>
+
+                <p>
+                    <strong>Antipolo City Senior High School</strong><br>
+                    STEM, 2023 - 2025; With High Honors
+                </p>
+
+                <p>
+                    <strong>Antipolo National High School</strong><br>
+                    2019 - 2023; With Honors
+                </p>
+
+                <p>
+                    <strong>Sta. Cruz Elementary School</strong><br>
+                    2012 - 2019; Academic Achiever
+                </p>
+
+            </div>
+
+
+            <!-- INTERESTS -->
+
+            <div class="bubble">
+
+                <h3>Interests &amp; Learning</h3>
+
+                <div class="interest-list">
+
+                    <span class="interest">Network Engineering</span>
+                    <span class="interest">Cyber Security</span>
+                    <span class="interest">Roblox</span>
+                    <span class="interest">TikTok</span>
+                    <span class="interest">Cats</span>
+                    <span class="interest">Unicorns</span>
+                    <span class="interest">Data Structures and Algorithms</span>
+                    <span class="interest">Computer Networking</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="bubble">
+
+                <h3>Skills</h3>
+
+                <div class="skill-list">
+
+                    <div class="skill">
+                        Basic Backend Development
+                    </div>
+
+                    <div class="skill">
+                        Basic Database Management and MySQL
+                    </div>
+
+                    <div class="skill">
+                        Python Programming
+                    </div>
+
+                    <div class="skill">
+                        Basic OOP
+                    </div>
+
+                    <div class="skill">
+                        Basic Computer Hardware and Troubleshooting
+                    </div>
+
+                    <div class="skill">
+                        Foundational Knowledge in Computer Networking
+                    </div>
+
+                    <div class="skill">
+                        Video and Photo Editing
+                    </div>
+
+                    <div class="skill">
+                        Excellent Teamwork and Communication
+                    </div>
+
+                    <div class="skill">
+                        Problem-solving abilities
+                    </div>
+
+                    <div class="skill">
+                        Fast Learner
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPERIENCE AND PROJECTS -->
+
+            <div class="bubble">
+
+                <h3>Experience &amp; Projects</h3>
+
+                <div class="learning-list">
+
+                    <div class="learning">
+                        <strong>Freelance Multimedia Editor | 2024 - Present</strong><br>
+                        Video editing and poster layouts for commission-based projects.
+                    </div>
+
+                    <div class="learning">
+                        <strong>PUP Wired | Video Producer</strong><br>
+                        Produces publicity and event videos for the organization.
+                    </div>
+
+                    <div class="learning">
+                        <strong>Work Immersion | 2025</strong><br>
+                        Practiced 3D building design and floor-plan creation.
+                    </div>
+
+                    <div class="learning">
+                        <strong>Deadline Tracker | 2026</strong><br>
+                        Built a Python, Tkinter, and MySQL task tracker with reminders.
+                    </div>
+
+                    <div class="learning">
+                        <strong>R.E.C.O.R.D. | 2025</strong><br>
+                        Created a Python address book with JSON-based data storage.
+                    </div>
+
+                    <div class="learning">
+                        <strong>Research | 2025</strong><br>
+                        Presented a prototype study on automated fire-water sprinklers for homes.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
 </body>
 </html>
