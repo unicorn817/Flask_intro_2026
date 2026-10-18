@@ -394,10 +394,10 @@
 <body>
     <nav aria-label="Main navigation">
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="/profile">PROFILE</a></li>
-            <li><a href="/works">WORKS</a></li>
-            <li><a href="/contact" aria-current="page">CONTACTS</a></li>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
+            <li><a href="{{ url_for('works') }}">WORKS</a></li>
+            <li><a href="{{ url_for('contact') }}" aria-current="page">CONTACTS</a></li>
         </ul>
     </nav>
 

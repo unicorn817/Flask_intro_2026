@@ -680,10 +680,10 @@ nav a:hover {
 
    <nav>
     <ul>
-        <li><a href="/">HOME</a></li>
-        <li><a href="/profile">PROFILE</a></li>
-        <li><a href="/works">WORKS</a></li>
-        <li><a href="/contact">CONTACTS</a></li>
+        <li><a href="{{ url_for('index') }}">HOME</a></li>
+        <li><a href="{{ url_for('profile') }}" aria-current="page">PROFILE</a></li>
+        <li><a href="{{ url_for('works') }}">WORKS</a></li>
+        <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
     </ul>
 </nav>
 

@@ -507,10 +507,10 @@
 
     <nav>
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="/profile">PROFILE</a></li>
-            <li><a href="/works">WORKS</a></li>
-            <li><a href="/contact">CONTACTS</a></li>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page">WORKS</a></li>
+            <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
         </ul>
     </nav>
 
@@ -572,7 +572,7 @@
                  <h2>Area of a Circle</h2>
                  <p>A simple Python program that calculates the area of a circle using its radius.</p>
 
-                 <a href="/works/area/circle" class="work-button">View Work</a>
+                 <a href="{{ url_for('acircle') }}" class="work-button">View Work</a>
             </div>
 
             <!-- AREA OF TRIANGLE -->
@@ -581,7 +581,7 @@
                 <h2>Area of a Triangle</h2>
                 <p>A Python program that calculates the area of a triangle using its base and height.</p>
 
-                <a href="/works/area/triangle" class="work-button">View Work</a>
+                <a href="{{ url_for('atriangle') }}" class="work-button">View Work</a>
 
             </div>
 
@@ -597,8 +597,14 @@
                     Explore and interact with different linked list operations.
                 </p>
 
-                <a href="/works/linked-list" class="work-button">Open Linked List</a>
+                <a href="{{ url_for('linked_list_page') }}" class="work-button">Open Linked List</a>
 
+            </div>
+
+            <div class="work-card">
+                <h2>Stack Applications</h2>
+                <p>Explore four stack activities, from LIFO operations to reversing strings.</p>
+                <a href="{{ url_for('stack_page') }}" class="work-button">Explore Stacks</a>
             </div>
 
 

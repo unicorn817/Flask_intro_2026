@@ -558,19 +558,19 @@
         <ul>
 
             <li>
-                <a href="/">HOME</a>
+                <a href="{{ url_for('index') }}" aria-current="page">HOME</a>
             </li>
 
             <li>
-                <a href="/profile">PROFILE</a>
+                <a href="{{ url_for('profile') }}">PROFILE</a>
             </li>
 
             <li>
-                <a href="/works">WORKS</a>
+                <a href="{{ url_for('works') }}">WORKS</a>
             </li>
 
             <li>
-                <a href="/contact">CONTACTS</a>
+                <a href="{{ url_for('contact') }}">CONTACTS</a>
             </li>
 
         </ul>

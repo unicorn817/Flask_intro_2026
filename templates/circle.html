@@ -186,10 +186,10 @@
 <body>
     <nav aria-label="Main navigation">
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="/profile">PROFILE</a></li>
-            <li><a href="/works">WORKS</a></li>
-            <li><a href="/contact">CONTACTS</a></li>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page">WORKS</a></li>
+            <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
         </ul>
     </nav>
 
@@ -214,7 +214,7 @@
             {% endif %}
         </section>
 
-        <a class="back-link" href="/works">Back to My Works</a>
+        <a class="back-link" href="{{ url_for('works') }}">Back to My Works</a>
     </main>
 </body>
 </html>

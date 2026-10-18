@@ -1,0 +1,498 @@
+{% macro preserve_stack() -%}
+    {% for item in stack_items %}
+    <input type="hidden" name="stack_items" value="{{ item }}">
+    {% endfor %}
+{%- endmacro %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7b6d9">
+    <title>{{ tool_info.title }} | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(1080px, 90%);
+            margin: 0 auto;
+            padding: 52px 0 68px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(38px, 6vw, 52px);
+        }
+
+        .intro {
+            max-width: 700px;
+            margin: 16px auto 0;
+            padding: 13px 22px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 24px;
+            margin-top: 36px;
+            text-align: left;
+        }
+
+        .panel {
+            min-width: 0;
+            min-height: 300px;
+            padding: 28px;
+            border: 3px solid #ec83ad;
+            border-radius: 24px;
+            background: #f8c8db;
+            box-shadow: 0 8px 20px rgba(80, 150, 180, 0.18);
+        }
+
+        .result-panel {
+            border-color: #9edbf0;
+            background: rgba(255, 255, 255, 0.84);
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font: 600 25px 'Fredoka', sans-serif;
+        }
+
+        .panel-copy {
+            margin: 0 0 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 2px solid #e99abb;
+            border-radius: 10px;
+            background: #fff;
+            color: #40595b;
+            font: 500 15px 'Quicksand', sans-serif;
+        }
+
+        input::placeholder {
+            color: #829596;
+            opacity: 1;
+        }
+
+        input:focus::placeholder {
+            color: transparent;
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #55b5d2;
+            outline-offset: 3px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            min-height: 46px;
+            padding: 10px 17px;
+            border: 0;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            cursor: pointer;
+            font: 600 16px 'Fredoka', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+        button.secondary {
+            background: #55a9c5;
+            box-shadow: 0 4px 0 #388aa4;
+        }
+
+        button.clear {
+            background: #bd6c91;
+            box-shadow: 0 4px 0 #995271;
+        }
+
+        .status {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            border: 2px solid rgba(101, 185, 87, 0.55);
+            border-radius: 12px;
+            background: #eff9e9;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .status.error {
+            border-color: #e99abb;
+            background: #fff0f6;
+            color: #9f3d67;
+        }
+
+        .result-box {
+            display: grid;
+            min-height: 140px;
+            gap: 12px;
+            align-content: center;
+            padding: 20px;
+            overflow-wrap: anywhere;
+            border: 2px dashed #9edbf0;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.68);
+        }
+
+        .result-box p {
+            margin: 0;
+            line-height: 1.65;
+        }
+
+        .result-label {
+            color: #4d8e67;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .result-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .postfix-result {
+            display: block;
+            padding: 18px;
+            overflow-wrap: anywhere;
+            border: 2px solid rgba(101, 185, 87, 0.45);
+            border-radius: 14px;
+            background: #eff9e9;
+            color: #315d50;
+            font: 600 23px 'Fredoka', sans-serif;
+            line-height: 1.5;
+        }
+
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 17px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .checkbox-field input {
+            width: 18px;
+            min-height: 18px;
+            margin: 0;
+            accent-color: #65b957;
+        }
+
+        .evaluation-details {
+            margin-top: 16px;
+            color: #647c63;
+            font-size: 14px;
+        }
+
+        .evaluation-details summary {
+            width: fit-content;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .evaluation-details p {
+            margin: 8px 0 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(237, 191, 82, 0.16);
+            color: #526568;
+        }
+
+        .stack-visual {
+            display: grid;
+            gap: 9px;
+            max-height: 340px;
+            overflow-y: auto;
+            margin: 0;
+            padding: 12px;
+            list-style: none;
+        }
+
+        .stack-visual li {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 11px 13px;
+            overflow-wrap: anywhere;
+            border: 2px solid #9edbf0;
+            border-radius: 10px;
+            background: #fff;
+            font-weight: 700;
+        }
+
+        .stack-visual li:first-child {
+            border-color: #65b957;
+            background: #eff9e9;
+        }
+
+        .stack-position {
+            flex: 0 0 auto;
+            color: #64836a;
+            font-size: 12px;
+        }
+
+        .empty-state {
+            display: grid;
+            min-height: 140px;
+            place-items: center;
+            margin: 0;
+            padding: 18px;
+            color: #6b6870;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 26px;
+            color: #388bb0;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #d45f92;
+        }
+
+        .page-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px 28px;
+            margin-top: 26px;
+        }
+
+        .page-links .back-link {
+            margin-top: 0;
+        }
+
+        @media (max-width: 720px) {
+            main {
+                width: 88%;
+                padding-top: 40px;
+            }
+
+            .workspace {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                margin-top: 28px;
+            }
+
+            .panel {
+                min-height: 0;
+                padding: 23px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page">WORKS</a></li>
+            <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="page-motifs" aria-hidden="true">
+            <span class="motif-spiral">꩜</span>
+            <span class="motif-star">✦</span>
+            <span class="motif-flower">🌸</span>
+        </div>
+
+        <h1>{{ tool_info.title }}</h1>
+        <p class="intro">{{ tool_info.description }}</p>
+
+        <div class="workspace">
+            <section class="panel" aria-labelledby="input-title">
+                <h2 id="input-title">{% if tool == 'stack' %}Stack controls{% else %}Your input{% endif %}</h2>
+                <p class="panel-copy">
+                    {% if tool == 'stack' %}
+                    Choose an operation to update your stack. New values are always added and removed at the top.
+                    {% elif tool == 'decimal' %}
+                    Enter a whole decimal number and choose the number system you want to convert it to.
+                    {% elif tool == 'infix' %}
+                    Enter an expression with variables such as A, B, and C, or use numbers. The postfix conversion works with either.
+                    {% else %}
+                    Enter the text you want to reverse. The result preserves spaces and punctuation.
+                    {% endif %}
+                </p>
+
+                {% if tool == 'stack' %}
+                <form action="{{ url_for('stack_tool_page', tool=tool) }}" method="post">
+                    {{ preserve_stack() }}
+                    <label class="field" for="stack-value">
+                        Value to push
+                        <input id="stack-value" name="stack_value" type="text" maxlength="120" autocomplete="off" placeholder="Try a number or a word">
+                    </label>
+                    <div class="actions">
+                        <button name="action" value="push" type="submit">Push</button>
+                        <button class="secondary" name="action" value="pop" type="submit">Pop</button>
+                        <button class="secondary" name="action" value="peek" type="submit">Peek</button>
+                        <button class="clear" name="action" value="clear" type="submit">Clear</button>
+                    </div>
+                </form>
+                {% elif tool == 'decimal' %}
+                <form action="{{ url_for('stack_tool_page', tool=tool) }}" method="post">
+                    <label class="field" for="number">
+                        Decimal integer
+                        <input id="number" name="number" type="number" step="1" value="{{ number }}" placeholder="Example: 42" required>
+                    </label>
+                    <label class="field" for="base">
+                        Convert to
+                        <select id="base" name="base">
+                            <option value="2" {% if base == '2' %}selected{% endif %}>Binary (base 2)</option>
+                            <option value="8" {% if base == '8' %}selected{% endif %}>Octal (base 8)</option>
+                            <option value="10" {% if base == '10' %}selected{% endif %}>Decimal (base 10)</option>
+                            <option value="16" {% if base == '16' %}selected{% endif %}>Hexadecimal (base 16)</option>
+                            {% for option in range(3, 37) %}
+                            {% if option not in [8, 10, 16] %}
+                            <option value="{{ option }}" {% if base == option|string %}selected{% endif %}>Base {{ option }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <button type="submit">Convert number</button>
+                </form>
+                {% elif tool == 'infix' %}
+                <form action="{{ url_for('stack_tool_page', tool=tool) }}" method="post">
+                    <label class="field" for="expression">
+                        Infix expression
+                        <input id="expression" name="expression" type="text" maxlength="300" value="{{ expression }}" placeholder="Example: A + B * C" required>
+                    </label>
+                    <label class="checkbox-field" for="evaluate-expression">
+                        <input id="evaluate-expression" name="evaluate" type="checkbox" {% if evaluate_requested %}checked{% endif %}>
+                        Also evaluate if the expression is numeric
+                    </label>
+                    <button type="submit">Convert to postfix</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('stack_tool_page', tool=tool) }}" method="post">
+                    <label class="field" for="reverse-text">
+                        Text to reverse
+                        <input id="reverse-text" name="reverse_text" type="text" maxlength="500" value="{{ reverse_text }}" placeholder="Example: STACK" required>
+                    </label>
+                    <button type="submit">Reverse string</button>
+                </form>
+                {% endif %}
+            </section>
+
+            <section class="panel result-panel" aria-labelledby="result-title">
+                <h2 id="result-title">
+                    {% if tool == 'stack' %}Your stack
+                    {% elif tool == 'infix' %}Converted postfix
+                    {% elif result_lines %}{{ result_title }}
+                    {% elif tool == 'decimal' %}Converted number
+                    {% else %}Reversed string
+                    {% endif %}
+                </h2>
+                {% if message %}
+                <p class="status {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
+
+                {% if tool == 'stack' %}
+                    {% if stack_values %}
+                    <ol class="stack-visual" aria-label="Stack, top to bottom">
+                        {% for item in stack_values %}
+                        <li>
+                            <span>{{ item }}</span>
+                            <span class="stack-position">{% if loop.first %}TOP{% else %}{{ loop.index }}{% endif %}</span>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                    {% else %}
+                    <p class="empty-state">Your stack is empty. Push a value to begin.</p>
+                    {% endif %}
+                {% elif tool == 'infix' and postfix_result is not none %}
+                <div class="result-box">
+                    <p class="result-label">POSTFIX EXPRESSION</p>
+                    <code class="postfix-result">{{ postfix_result }}</code>
+                    {% if evaluate_requested %}
+                        {% if evaluation_result is not none %}
+                        <details class="evaluation-details">
+                            <summary>Show evaluated result</summary>
+                            <p>{{ "%.12g"|format(evaluation_result) }}</p>
+                        </details>
+                        {% elif evaluation_note %}
+                        <p class="evaluation-details">{{ evaluation_note }}</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% elif result_lines %}
+                <div class="result-box" role="status">
+                    {% for line in result_lines %}
+                    <p{% if tool == 'infix' and loop.first %} class="result-label"{% else %} class="result-value"{% endif %}>{{ line }}</p>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="result-box">
+                    <p class="empty-state">
+                        {% if tool == 'decimal' %}Your converted number will appear here.{% elif tool == 'infix' %}Your converted postfix expression will appear here.{% else %}Your reversed string will appear here.{% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <div class="page-links">
+            <a class="back-link" href="{{ url_for('stack_page') }}">Back to Stack Applications</a>
+            <a class="back-link" href="{{ url_for('works') }}">Back to My Works</a>
+        </div>
+    </main>
+</body>
+</html>

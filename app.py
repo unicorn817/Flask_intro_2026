@@ -1,7 +1,33 @@
-from flask import Flask, render_template, request
+from flask import Flask, abort, render_template, request
 from linked_list import LinkedList
+from stack import (
+    Stack,
+    decimal_to_base,
+    evaluate_postfix,
+    infix_to_postfix,
+    reverse_string,
+)
 
 app = Flask(__name__)
+
+STACK_TOOLS = {
+    'stack': {
+        'title': 'Stack Operations',
+        'description': 'Practice the last-in, first-out rule by pushing, popping, and peeking at values.',
+    },
+    'decimal': {
+        'title': 'Decimal Conversion',
+        'description': 'Convert a decimal integer to binary, octal, hexadecimal, or any base from 2 to 36.',
+    },
+    'infix': {
+        'title': 'Infix to Postfix',
+        'description': 'Convert an arithmetic expression to postfix notation and evaluate the result.',
+    },
+    'reverse': {
+        'title': 'Reverse a String',
+        'description': 'Use a stack to read characters in last-in, first-out order and reverse the text.',
+    },
+}
 
 @app.route('/')
 def index():
@@ -135,6 +161,105 @@ def linked_list_page():
         message_type=message_type,
         selected_action=selected_action,
         match_value=match_value,
+    )
+
+@app.route('/works/stack')
+def stack_page():
+    return render_template('stack.html', tools=STACK_TOOLS)
+
+
+@app.route('/works/stack/<tool>', methods=['GET', 'POST'])
+def stack_tool_page(tool):
+    tool_info = STACK_TOOLS.get(tool)
+    if tool_info is None:
+        abort(404)
+
+    stack = Stack[str]()
+    for item in request.form.getlist('stack_items'):
+        stack.push(item)
+
+    message = None
+    message_type = 'success'
+    result_lines = []
+    result_title = 'Your result'
+    postfix_result = None
+    evaluation_result = None
+    evaluation_note = None
+    evaluate_requested = request.form.get('evaluate') == 'on'
+
+    if request.method == 'POST':
+        try:
+            if tool == 'stack':
+                action = request.form.get('action', '')
+                if action == 'push':
+                    value = request.form.get('stack_value', '').strip()
+                    if not value:
+                        raise ValueError('Enter a value to push onto the stack.')
+                    stack.push(value)
+                    message = f'Pushed {value} onto the stack.'
+                elif action == 'pop':
+                    value = stack.pop()
+                    if value is None:
+                        raise ValueError('The stack is empty; there is nothing to pop.')
+                    message = f'Popped {value} from the stack.'
+                elif action == 'peek':
+                    value = stack.peek()
+                    if value is None:
+                        raise ValueError('The stack is empty; there is no top value.')
+                    message = f'Top value: {value}.'
+                elif action == 'clear':
+                    stack = Stack()
+                    message = 'The stack has been cleared.'
+                else:
+                    raise ValueError('Choose a valid stack operation.')
+                result_title = 'Current stack'
+            elif tool == 'decimal':
+                raw_number = request.form.get('number', '').strip()
+                if not raw_number:
+                    raise ValueError('Enter a decimal integer to convert.')
+                number = int(raw_number)
+                base = int(request.form.get('base', ''))
+                result_title = 'Converted number'
+                result_lines.append(
+                    f'{number} in base {base}: {decimal_to_base(number, base)}'
+                )
+            elif tool == 'infix':
+                expression = request.form.get('expression', '')
+                postfix_result = infix_to_postfix(expression)
+                result_title = 'Converted postfix'
+                if evaluate_requested:
+                    try:
+                        evaluation_result = evaluate_postfix(postfix_result)
+                    except ValueError:
+                        evaluation_note = 'Evaluation is available for numeric expressions only.'
+            elif tool == 'reverse':
+                text = request.form.get('reverse_text', '')
+                result_title = 'Reversed string'
+                result_lines.append(reverse_string(text))
+        except (ValueError, ZeroDivisionError, OverflowError) as error:
+            message = str(error)
+            message_type = 'error'
+
+    stack_values = list(stack)
+    stack_items = list(reversed(stack_values))
+    return render_template(
+        'stack_tool.html',
+        tool=tool,
+        tool_info=tool_info,
+        stack_values=stack_values,
+        stack_items=stack_items,
+        result_lines=result_lines,
+        result_title=result_title,
+        postfix_result=postfix_result,
+        evaluation_result=evaluation_result,
+        evaluation_note=evaluation_note,
+        evaluate_requested=evaluate_requested,
+        message=message,
+        message_type=message_type,
+        number=request.form.get('number', ''),
+        base=request.form.get('base', '2'),
+        expression=request.form.get('expression', ''),
+        reverse_text=request.form.get('reverse_text', ''),
     )
 
 @app.route('/contact')

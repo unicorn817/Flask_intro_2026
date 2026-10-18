@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7b6d9">
+    <title>Stack Applications | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(1080px, 90%);
+            margin: 0 auto;
+            padding: 52px 0 68px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(38px, 6vw, 54px);
+        }
+
+        .intro {
+            max-width: 680px;
+            margin: 16px auto 0;
+            padding: 13px 22px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+            margin-top: 38px;
+            text-align: center;
+        }
+
+        .tool-card {
+            display: flex;
+            min-height: 235px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            border: 3px solid #ec83ad;
+            border-radius: 28px;
+            background: #f8c8db;
+            box-shadow: 0 8px 20px rgba(80, 150, 180, 0.18);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 13px 25px rgba(80, 150, 180, 0.25);
+        }
+
+        .tool-icon {
+            display: grid;
+            width: 58px;
+            height: 58px;
+            place-items: center;
+            margin-bottom: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.88);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.68);
+            color: #4d8e67;
+            font: 700 25px 'Fredoka', sans-serif;
+        }
+
+        .tool-card h2 {
+            margin: 0 0 10px;
+            font: 600 25px 'Fredoka', sans-serif;
+        }
+
+        .tool-card p {
+            max-width: 390px;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .work-button,
+        .back-link {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .work-button {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .work-button:hover {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 28px;
+            color: #388bb0;
+        }
+
+        .back-link:hover {
+            color: #d45f92;
+        }
+
+        @media (max-width: 700px) {
+            main {
+                width: 88%;
+                padding-top: 40px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                margin-top: 28px;
+            }
+
+            .tool-card {
+                min-height: 210px;
+                padding: 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page">WORKS</a></li>
+            <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="page-motifs" aria-hidden="true">
+            <span class="motif-spiral">꩜</span>
+            <span class="motif-star">✦</span>
+            <span class="motif-flower">🌸</span>
+        </div>
+
+        <h1>STACK APPLICATIONS</h1>
+        <p class="intro">
+            Choose a stack activity to explore. Each one uses the same
+            last-in, first-out idea in a different way.
+        </p>
+
+        <div class="tools-grid">
+            {% for key, tool in tools.items() %}
+            <article class="tool-card">
+                <span class="tool-icon" aria-hidden="true">
+                    {% if key == 'stack' %}LIFO{% elif key == 'decimal' %}10→2{% elif key == 'infix' %}a+b{% else %}↶{% endif %}
+                </span>
+                <h2>{{ tool.title }}</h2>
+                <p>{{ tool.description }}</p>
+                <a class="work-button" href="{{ url_for('stack_tool_page', tool=key) }}">Open {{ tool.title }}</a>
+            </article>
+            {% endfor %}
+        </div>
+
+        <a class="back-link" href="{{ url_for('works') }}">Back to My Works</a>
+    </main>
+</body>
+</html>
