@@ -183,229 +183,24 @@
             font-size: 20px;
         }
 
-        .unicorn-scene {
-            position: relative;
-            display: grid;
-            place-items: center;
-            width: min(100%, 440px);
-            aspect-ratio: 1;
-            justify-self: center;
-        }
-
-        .unicorn-scene::before {
-            position: absolute;
-            inset: 5%;
-            border: 2px dashed rgba(255, 255, 255, 0.78);
-            border-radius: 50%;
-            content: '';
-            transform: rotate(-12deg);
-        }
-
-        .unicorn-scene::after {
-            position: absolute;
-            inset: 14%;
-            border: 1px solid rgba(255, 255, 255, 0.54);
-            border-radius: 50%;
-            content: '';
-        }
-
-        .unicorn {
-            position: relative;
-            z-index: 1;
-            display: block;
-            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
-            font-size: 230px;
-            line-height: 1;
-            filter: drop-shadow(0 18px 12px rgba(84, 102, 108, 0.18));
-            animation: unicorn-float 4s ease-in-out infinite;
-        }
-
-        .sparkle {
-            position: absolute;
-            z-index: 1;
-            color: #fff;
-            font-family: 'Fredoka', sans-serif;
-            text-shadow: 0 2px 8px rgba(77, 138, 147, 0.3);
-            animation: sparkle 3s ease-in-out infinite;
-        }
-
-        .sparkle-one {
-            top: 16%;
-            left: 17%;
-            color: #fff;
-            font-size: 44px;
-        }
-
-        .sparkle-two {
-            top: 28%;
-            right: 12%;
-            color: #ffe26f;
-            font-size: 34px;
-            animation-delay: 0.7s;
-        }
-
-        .sparkle-three {
-            right: 18%;
-            bottom: 18%;
-            color: #ec87b7;
-            font-size: 48px;
-            animation-delay: 1.2s;
-        }
-
-        .sparkle-four {
-            bottom: 22%;
-            left: 12%;
-            color: #6fc7d4;
-            font-size: 29px;
-            animation-delay: 1.6s;
-        }
-
-        @keyframes unicorn-float {
-            0%, 100% {
-                transform: translateY(0) rotate(-3deg);
-            }
-
-            50% {
-                transform: translateY(-10px) rotate(2deg);
-            }
-        }
-
-        @keyframes sparkle {
-            0%, 100% {
-                opacity: 0.68;
-                transform: scale(0.9) rotate(-8deg);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.12) rotate(8deg);
-            }
-        }
-
-        @media (max-width: 850px) {
-            main {
-                grid-template-columns: minmax(0, 1fr) minmax(250px, 0.8fr);
-                gap: 28px;
-                width: min(100% - 40px, 720px);
-            }
-
-            h1 {
-                font-size: 48px;
-            }
-
-            .unicorn {
-                font-size: 180px;
-            }
-        }
-
-        @media (max-width: 650px) {
-            nav ul {
-                gap: 18px;
-            }
-
-            nav a {
-                font-size: 14px;
-            }
-
-            main {
-                grid-template-columns: 1fr;
-                gap: 14px;
-                width: min(100% - 36px, 520px);
-                padding: 38px 0 52px;
-            }
-
-            h1 {
-                font-size: 44px;
-            }
-
-            .intro {
-                margin: 13px 0 20px;
-                font-size: 16px;
-            }
-
-            .unicorn-scene {
-                grid-row: 1;
-                width: min(72%, 270px);
-                margin-bottom: 4px;
-            }
-
-            .contact-copy {
-                display: contents;
-            }
-
-            .eyebrow,
-            h1,
-            .intro,
-            .contact-list {
-                grid-column: 1;
-            }
-
-            .eyebrow {
-                grid-row: 2;
-                justify-self: start;
-                margin-bottom: 4px;
-            }
-
-            h1 {
-                grid-row: 3;
-            }
-
-            .intro {
-                grid-row: 4;
-            }
-
-            .contact-list {
-                grid-row: 5;
-            }
-
-            .unicorn {
-                font-size: 150px;
-            }
-
-            .contact-link {
-                grid-template-columns: 40px minmax(0, 1fr) 22px;
-                gap: 10px;
-                padding: 9px 10px;
-            }
-
-            .contact-icon {
-                width: 38px;
-                height: 38px;
-            }
-
-            .contact-value {
-                font-size: 14px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                scroll-behavior: auto !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 </head>
-<body>
+<body class="contact-page">
     <nav aria-label="Main navigation">
         <ul>
-            <li><a href="{{ url_for('index') }}">HOME</a></li>
-            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
-            <li><a href="{{ url_for('works') }}">WORKS</a></li>
-            <li><a href="{{ url_for('contact') }}" aria-current="page">CONTACTS</a></li>
+            <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
+            <li><a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
+            <li><a href="{{ url_for('works') }}"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
+            <li><a href="{{ url_for('contact') }}" aria-current="page"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACTS</span></a></li>
         </ul>
     </nav>
 
     <main>
         <section class="contact-copy" aria-labelledby="contact-title">
-            <p class="eyebrow">A LITTLE MAGIC, A HELLO AWAY</p>
-            <h1 id="contact-title">Let's make something magical.</h1>
-            <p class="intro">Have a question, an idea, or just want to say hello? Pick your favorite way to reach me.</p>
+            <p class="eyebrow">CONTACT INFORMATION</p>
+            <h1 id="contact-title">Let’s connect!</h1>
+            <p class="intro">For professional inquiries, project opportunities, or collaboration, please reach out through any of the channels below.</p>
 
             <div class="contact-list" aria-label="Contact information">
                 <a class="contact-link" href="mailto:jezrellabong0817@gmail.com">
@@ -464,15 +259,6 @@
             </div>
         </section>
 
-        <div class="unicorn-scene" role="img" aria-label="A magical unicorn surrounded by sparkles">
-            <span class="sparkle sparkle-one" aria-hidden="true">✦</span>
-            <span class="sparkle sparkle-two" aria-hidden="true">✧</span>
-            <span class="sparkle sparkle-three" aria-hidden="true">✦</span>
-            <span class="sparkle sparkle-four" aria-hidden="true">✧</span>
-            <span class="scene-flower">🌸</span>
-            <span class="scene-spiral">꩜</span>
-            <span class="unicorn" aria-hidden="true">🦄</span>
-        </div>
     </main>
 </body>
 </html>

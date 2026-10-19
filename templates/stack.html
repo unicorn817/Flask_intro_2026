@@ -84,6 +84,14 @@
             font: 700 25px 'Fredoka', sans-serif;
         }
 
+        .tool-icon-decimal {
+            width: max-content;
+            min-width: 58px;
+            padding: 0 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
         .tool-card h2 {
             margin: 0 0 10px;
             font: 600 25px 'Fredoka', sans-serif;
@@ -149,13 +157,13 @@
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 </head>
-<body>
+<body class="works-tool-page">
     <nav aria-label="Main navigation">
         <ul>
-            <li><a href="{{ url_for('index') }}">HOME</a></li>
-            <li><a href="{{ url_for('profile') }}">PROFILE</a></li>
-            <li><a href="{{ url_for('works') }}" aria-current="page">WORKS</a></li>
-            <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
+            <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
+            <li><a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
+            <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACTS</span></a></li>
         </ul>
     </nav>
 
@@ -175,7 +183,7 @@
         <div class="tools-grid">
             {% for key, tool in tools.items() %}
             <article class="tool-card">
-                <span class="tool-icon" aria-hidden="true">
+                <span class="tool-icon{% if key == 'decimal' %} tool-icon-decimal{% endif %}" aria-hidden="true">
                     {% if key == 'stack' %}LIFO{% elif key == 'decimal' %}10→2{% elif key == 'infix' %}a+b{% else %}↶{% endif %}
                 </span>
                 <h2>{{ tool.title }}</h2>

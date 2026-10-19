@@ -671,19 +671,19 @@ nav a:hover {
 </head>
 
 
-<body>
+<body class="profile-page">
 
 
     <!-- =========================
          NAVIGATION BAR
     ========================= -->
 
-   <nav>
+   <nav aria-label="Main navigation">
     <ul>
-        <li><a href="{{ url_for('index') }}">HOME</a></li>
-        <li><a href="{{ url_for('profile') }}" aria-current="page">PROFILE</a></li>
-        <li><a href="{{ url_for('works') }}">WORKS</a></li>
-        <li><a href="{{ url_for('contact') }}">CONTACTS</a></li>
+        <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
+        <li><a href="{{ url_for('profile') }}" aria-current="page"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
+        <li><a href="{{ url_for('works') }}"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
+        <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACTS</span></a></li>
     </ul>
 </nav>
 
@@ -778,7 +778,7 @@ nav a:hover {
 
                 <div class="photo-frame">
 
-                    <img src="{{ url_for('static', filename='images/jezrel.jpg') }}" alt="Jezrel">
+                    <img src="{{ url_for('static', filename='images/jezrel profile.png') }}" alt="Jezrel">
 
                 </div>
 

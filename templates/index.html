@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jezrel | Home</title>
 
     <!-- Whimsical fonts -->
@@ -546,31 +548,31 @@
 </head>
 
 
-<body>
+<body class="home-page">
 
 
     <!-- =========================
          NAVIGATION
     ========================== -->
 
-    <nav>
+    <nav aria-label="Main navigation">
 
         <ul>
 
             <li>
-                <a href="{{ url_for('index') }}" aria-current="page">HOME</a>
+                <a href="{{ url_for('index') }}" aria-current="page"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a>
             </li>
 
             <li>
-                <a href="{{ url_for('profile') }}">PROFILE</a>
+                <a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a>
             </li>
 
             <li>
-                <a href="{{ url_for('works') }}">WORKS</a>
+                <a href="{{ url_for('works') }}"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a>
             </li>
 
             <li>
-                <a href="{{ url_for('contact') }}">CONTACTS</a>
+                <a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACTS</span></a>
             </li>
 
         </ul>
@@ -619,29 +621,12 @@
     ========================== -->
 
     <section class="hero">
-
-        <div class="unicorn">
-            🦄
+        <div class="hero-copy">
+            <p class="hero-eyebrow">COMPUTER ENGINEERING · CREATIVE TECHNOLOGY</p>
+            <h1>Hi, I'm <span class="highlight">Jezrel</span></h1>
+            <p>a Computer Engineering student passionate about technology, creativity, and learning new things. This website showcases my profile, programming works, and my journey as a student in technology.</p>
+            <a class="button" href="{{ url_for('profile') }}">Get to know me <span aria-hidden="true">→</span></a>
         </div>
-
-        <h1>
-            Welcome to <span class="highlight">my</span> website!
-        </h1>
-
-        <p>
-            Hi! I am <strong>Jezrel</strong>, a Computer Engineering
-            student passionate about technology, creativity,
-            and learning new things.
-        </p>
-
-        <p>
-            This website showcases my profile, programming works,
-            and my journey as a student in technology.
-        </p>
-
-        <a class="button" href="/profile">
-            ✿ Get to Know Me ✿
-        </a>
 
     </section>
 
