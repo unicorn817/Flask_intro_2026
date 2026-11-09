@@ -1,0 +1,686 @@
+{% macro render_node(node, matched_value) -%}
+<div class="tree-item" role="treeitem" aria-label="Node {{ node.value }}">
+    <span class="tree-node{% if node.left or node.right %} has-children{% endif %}{% if matched_value is not none and node.value == matched_value %} matched is-blinking{% endif %}"{% if matched_value is not none and node.value == matched_value %} role="button" tabindex="0" aria-label="Found node {{ node.value }}. Activate to stop blinking." title="Activate to stop blinking"{% endif %}>{{ node.value }}</span>
+    {% if node.left or node.right %}
+    <div class="tree-children" role="group">
+        <div class="tree-branch">
+            {% if node.left %}
+            {{ render_node(node.left, matched_value) }}
+            {% else %}
+            <span class="tree-placeholder" aria-hidden="true"></span>
+            {% endif %}
+        </div>
+        <div class="tree-branch">
+            {% if node.right %}
+            {{ render_node(node.right, matched_value) }}
+            {% else %}
+            <span class="tree-placeholder" aria-hidden="true"></span>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{%- endmacro %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7b6d9">
+    <title>Binary Tree | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, 90%);
+            margin: 0 auto;
+            padding: 52px 0 68px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(38px, 6vw, 52px);
+        }
+
+        .intro {
+            max-width: 720px;
+            margin: 16px auto 0;
+            padding: 13px 22px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 24px;
+            margin-top: 36px;
+            text-align: left;
+        }
+
+        .panel {
+            min-width: 0;
+            padding: 28px;
+            border: 3px solid #ec83ad;
+            border-radius: 24px;
+            background: #f8c8db;
+            box-shadow: 0 8px 20px rgba(80, 150, 180, 0.18);
+        }
+
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            border-color: #9edbf0;
+            background: rgba(255, 255, 255, 0.84);
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font: 600 25px 'Fredoka', sans-serif;
+        }
+
+        .panel-copy {
+            margin: 0 0 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field[hidden] {
+            display: none;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 2px solid #e99abb;
+            border-radius: 10px;
+            background: #fff;
+            color: #40595b;
+            font: 500 15px 'Quicksand', sans-serif;
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #55b5d2;
+            outline-offset: 3px;
+        }
+
+        button {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 17px;
+            border: 0;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            cursor: pointer;
+            font: 600 16px 'Fredoka', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+        .status {
+            margin: 18px 0 0;
+            padding: 12px 14px;
+            border: 2px solid rgba(101, 185, 87, 0.55);
+            border-radius: 12px;
+            background: #eff9e9;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .status.error {
+            border-color: #e99abb;
+            background: #fff0f6;
+            color: #9f3d67;
+        }
+
+        .result-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .result-heading h2 {
+            margin: 0;
+        }
+
+        .count {
+            color: #4d8e67;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .empty-state {
+            margin: 0;
+            padding: 24px 14px;
+            border: 2px dashed #e99abb;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.55);
+            color: #6b6870;
+            font-size: 15px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .tree-canvas {
+            max-height: min(560px, 70vh);
+            overflow: auto;
+            padding: 20px;
+            border: 2px dashed #9edbf0;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.68);
+        }
+
+        .tree-tools {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+        }
+
+        .tree-tools button {
+            width: 40px;
+            min-height: 38px;
+            padding: 5px;
+            background: #55a9c5;
+            box-shadow: 0 3px 0 #388aa4;
+            font-size: 20px;
+        }
+
+        .tree-tools button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .zoom-level {
+            min-width: 46px;
+            color: #4d8e67;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .tree,
+        .tree-children {
+            display: flex;
+            justify-content: center;
+            width: max-content;
+            min-width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tree-item,
+        .tree-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tree-item {
+            padding: 0 10px;
+        }
+
+        .tree-node {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            max-width: 180px;
+            overflow-wrap: anywhere;
+            padding: 10px 14px;
+            border: 2px solid #e0a800;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 0 rgba(224, 168, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .tree-node.matched {
+            border-color: #e0a800;
+            background: #ffd1e5;
+            box-shadow: 0 4px 0 rgba(224, 168, 0, 0.3);
+            color: #42142b;
+        }
+
+        .tree-node.matched.is-blinking {
+            animation: found-node-pulse 0.35s ease-in-out infinite alternate;
+            cursor: pointer;
+        }
+
+        @keyframes found-node-pulse {
+            from {
+                background: #ff8fc2;
+                box-shadow: 0 0 0 3px rgba(255, 60, 145, 0.28), 0 4px 0 rgba(224, 168, 0, 0.3);
+            }
+
+            to {
+                background: #ff3d96;
+                box-shadow: 0 0 0 6px rgba(255, 60, 145, 0.4), 0 4px 0 rgba(224, 168, 0, 0.3);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tree-node.matched.is-blinking {
+                animation: none;
+                background: #ffd1e5;
+            }
+        }
+
+        .tree-children {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(120px, 1fr));
+            position: relative;
+            gap: 0;
+            padding-top: 28px;
+        }
+
+        .tree-branch {
+            position: relative;
+            min-width: 0;
+            padding-top: 14px;
+        }
+
+        .tree-branch:first-child::after,
+        .tree-branch:last-child::after {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            border-top: 2px solid #e0a800;
+            content: '';
+        }
+
+        .tree-branch:first-child::after {
+            right: 0;
+        }
+
+        .tree-branch:last-child::after {
+            left: 0;
+        }
+
+        .tree-branch::before {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 14px;
+            border-left: 2px solid #e0a800;
+            content: '';
+        }
+
+        .tree-node.has-children::after {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            height: 28px;
+            border-left: 2px solid #e0a800;
+            content: '';
+        }
+
+        .tree-placeholder {
+            display: block;
+            min-width: 120px;
+            min-height: 42px;
+        }
+
+        .traversal-result {
+            margin-top: 18px;
+            padding: 15px;
+            border: 2px solid rgba(101, 185, 87, 0.4);
+            border-radius: 14px;
+            background: #eff9e9;
+        }
+
+        .traversal-result h3 {
+            margin: 0 0 10px;
+            color: #4d8e67;
+            font: 600 18px 'Fredoka', sans-serif;
+        }
+
+        .traversal-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .traversal-values li {
+            padding: 7px 11px;
+            border: 1px solid #9edbf0;
+            border-radius: 9px;
+            background: #fff;
+            font-weight: 700;
+        }
+
+        .clear-form {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .clear-button {
+            background: #bd6c91;
+            box-shadow: 0 4px 0 #995271;
+        }
+
+        .clear-button:hover {
+            background: #a9587d;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #388bb0;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @media (max-width: 720px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            main {
+                width: 88%;
+                padding-top: 40px;
+            }
+
+            .workspace {
+                margin-top: 28px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .tree-canvas {
+                padding: 14px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body class="works-tool-page">
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
+            <li><a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
+            <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACT</span></a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="page-motifs" aria-hidden="true">
+            <span class="motif-spiral">꩜</span>
+            <span class="motif-star">✦</span>
+            <span class="motif-flower">🌸</span>
+        </div>
+        <h1>BINARY TREE</h1>
+        <p class="intro">
+            Build a tree by adding left and right children. Search, delete, and
+            explore preorder, inorder, and postorder traversals.
+        </p>
+
+        <div class="workspace">
+            <section class="panel" aria-labelledby="operation-title">
+                <h2 id="operation-title">Tree operations</h2>
+                <p class="panel-copy">Values are text. If a parent value appears more than once, operations use its first match from the root.</p>
+                <form method="post">
+                    <input type="hidden" name="tree_data" value="{{ tree_data }}">
+                    <input class="zoom-value" type="hidden" name="zoom_percent" value="{{ zoom_percent }}">
+                    <input class="scroll-value" type="hidden" name="scroll_y" value="0">
+
+                    <label class="field" for="action">
+                        Choose an operation
+                        <select id="action" name="action" required>
+                            <option value="set_root" {% if selected_action == 'set_root' or (not selected_action and not tree.root) %}selected{% endif %}>Set root</option>
+                            <option value="insert_left" {% if selected_action == 'insert_left' or (not selected_action and tree.root) %}selected{% endif %}>Add left child</option>
+                            <option value="insert_right" {% if selected_action == 'insert_right' %}selected{% endif %}>Add right child</option>
+                            <option value="search" {% if selected_action == 'search' %}selected{% endif %}>Search for a value</option>
+                            <option value="delete" {% if selected_action == 'delete' %}selected{% endif %}>Delete a value</option>
+                            <option value="preorder" {% if selected_action == 'preorder' %}selected{% endif %}>Preorder traversal</option>
+                            <option value="inorder" {% if selected_action == 'inorder' %}selected{% endif %}>Inorder traversal</option>
+                            <option value="postorder" {% if selected_action == 'postorder' %}selected{% endif %}>Postorder traversal</option>
+                        </select>
+                    </label>
+
+                    <label class="field" id="value-field" for="value">
+                        <span id="value-label">Root value</span>
+                        <input id="value" name="value" type="text" maxlength="80" autocomplete="off" placeholder="Enter a node value">
+                    </label>
+
+                    <label class="field" id="parent-field" for="parent-value" hidden>
+                        Parent value
+                        <input id="parent-value" name="parent_value" type="text" maxlength="80" autocomplete="off" placeholder="Value of an existing node">
+                    </label>
+
+                    <button type="submit">Run operation</button>
+                </form>
+
+                {% if message %}
+                <p class="status {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
+            </section>
+
+            <section class="panel result-panel" aria-labelledby="tree-title">
+                <div class="result-heading">
+                    <h2 id="tree-title">Your Binary Tree</h2>
+                    <span class="count">{{ node_count }} {% if node_count == 1 %}node{% else %}nodes{% endif %}</span>
+                </div>
+
+                {% if tree.root %}
+                <div class="tree-tools" role="group" aria-label="Tree zoom controls">
+                    <button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+                    <span class="zoom-level" id="zoom-level" aria-live="polite">{{ zoom_percent }}%</span>
+                    <button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+                    <button id="zoom-fit" type="button" aria-label="Fit entire tree" title="Fit entire tree">Fit</button>
+                    <button id="zoom-reset" type="button" aria-label="Reset zoom" title="Reset zoom">↺</button>
+                </div>
+                <div class="tree-canvas" role="region" aria-label="Binary tree diagram" tabindex="0">
+                    <div class="tree" role="tree" aria-label="Binary tree" style="zoom: {{ zoom_percent }}%">
+                        {{ render_node(tree.root, matched_value) }}
+                    </div>
+                </div>
+                {% else %}
+                <p class="empty-state">Your tree is empty. Set a root value to get started.</p>
+                {% endif %}
+
+                {% if traversal_result is not none %}
+                <section class="traversal-result" aria-live="polite">
+                    <h3>Traversal order</h3>
+                    <ol class="traversal-values" aria-label="Traversal result">
+                        {% for value in traversal_result %}
+                        <li>{{ value }}</li>
+                        {% endfor %}
+                    </ol>
+                </section>
+                {% endif %}
+
+                <form class="clear-form" method="post">
+                    <input type="hidden" name="tree_data" value="{{ tree_data }}">
+                    <input class="zoom-value" type="hidden" name="zoom_percent" value="{{ zoom_percent }}">
+                    <input class="scroll-value" type="hidden" name="scroll_y" value="0">
+                    <input type="hidden" name="action" value="clear">
+                    <button class="clear-button" type="submit">Clear tree</button>
+                </form>
+            </section>
+        </div>
+
+        <a class="back-link" href="{{ url_for('works') }}">Back to My Works</a>
+    </main>
+
+    <script>
+        const actionSelect = document.getElementById('action');
+        const valueField = document.getElementById('value-field');
+        const valueInput = document.getElementById('value');
+        const valueLabel = document.getElementById('value-label');
+        const parentField = document.getElementById('parent-field');
+        const parentInput = document.getElementById('parent-value');
+        const tree = document.querySelector('.tree');
+        const treeCanvas = document.querySelector('.tree-canvas');
+        const zoomLevel = document.getElementById('zoom-level');
+        const zoomValues = [...document.querySelectorAll('.zoom-value')];
+        let zoomPercent = Number(zoomValues[0]?.value || 100);
+
+        function updateZoom() {
+            if (!tree) {
+                return;
+            }
+            tree.style.zoom = `${zoomPercent}%`;
+            zoomLevel.textContent = `${zoomPercent}%`;
+            zoomValues.forEach((input) => {
+                input.value = String(zoomPercent);
+            });
+            document.getElementById('zoom-out').disabled = zoomPercent <= 10;
+            document.getElementById('zoom-in').disabled = zoomPercent >= 100;
+        }
+
+        function updateOperationFields() {
+            const action = actionSelect.value;
+            const needsValue = ['set_root', 'insert_left', 'insert_right', 'search', 'delete'].includes(action);
+            const needsParent = ['insert_left', 'insert_right'].includes(action);
+            const labels = {
+                set_root: 'Root value',
+                insert_left: 'New node value',
+                insert_right: 'New node value',
+                search: 'Value to find',
+                delete: 'Value to delete'
+            };
+
+            valueField.hidden = !needsValue;
+            valueInput.required = needsValue;
+            valueLabel.textContent = labels[action] || 'Value';
+            valueInput.placeholder = action === 'set_root' ? 'Enter the root value' : 'Enter a node value';
+            parentField.hidden = !needsParent;
+            parentInput.required = needsParent;
+        }
+
+        actionSelect.addEventListener('change', updateOperationFields);
+        updateOperationFields();
+
+        if (tree) {
+            document.querySelectorAll('.tree-node.matched.is-blinking').forEach((node) => {
+                const stopBlinking = () => {
+                    node.classList.remove('is-blinking');
+                    node.removeAttribute('role');
+                    node.removeAttribute('tabindex');
+                    node.removeAttribute('aria-label');
+                    node.removeAttribute('title');
+                };
+
+                node.addEventListener('click', stopBlinking);
+                node.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        stopBlinking();
+                    }
+                });
+            });
+
+            document.getElementById('zoom-out').addEventListener('click', () => {
+                zoomPercent = Math.max(10, zoomPercent - 10);
+                updateZoom();
+            });
+            document.getElementById('zoom-in').addEventListener('click', () => {
+                zoomPercent = Math.min(100, zoomPercent + 10);
+                updateZoom();
+            });
+            document.getElementById('zoom-reset').addEventListener('click', () => {
+                zoomPercent = 100;
+                updateZoom();
+            });
+            document.getElementById('zoom-fit').addEventListener('click', () => {
+                tree.style.zoom = '100%';
+                requestAnimationFrame(() => {
+                    const treeBounds = tree.getBoundingClientRect();
+                    const widthScale = (treeCanvas.clientWidth - 40) / treeBounds.width;
+                    const heightScale = (treeCanvas.clientHeight - 40) / treeBounds.height;
+                    zoomPercent = Math.max(
+                        10,
+                        Math.min(100, Math.floor(Math.min(widthScale, heightScale) * 100))
+                    );
+                    updateZoom();
+                    treeCanvas.scrollTo(0, 0);
+                });
+            });
+            updateZoom();
+        }
+
+        document.querySelectorAll('form').forEach((form) => {
+            form.addEventListener('submit', () => {
+                const scrollValue = form.querySelector('.scroll-value');
+                if (scrollValue) {
+                    scrollValue.value = String(window.scrollY);
+                    sessionStorage.setItem('binary-tree-scroll-y', scrollValue.value);
+                }
+            });
+        });
+
+        history.scrollRestoration = 'manual';
+        const savedScrollY = sessionStorage.getItem('binary-tree-scroll-y');
+        if (savedScrollY !== null) {
+            sessionStorage.removeItem('binary-tree-scroll-y');
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                window.scrollTo(0, Number(savedScrollY));
+            }));
+        }
+    </script>
+</body>
+</html>

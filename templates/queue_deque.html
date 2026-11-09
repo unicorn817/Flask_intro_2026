@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7b6d9">
+    <title>Queue &amp; Deque | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(1080px, 90%);
+            margin: 0 auto;
+            padding: 52px 0 68px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(38px, 6vw, 52px);
+        }
+
+        .intro {
+            max-width: 700px;
+            margin: 16px auto 0;
+            padding: 13px 22px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 24px;
+            margin-top: 36px;
+            text-align: left;
+        }
+
+        .panel {
+            min-width: 0;
+            padding: 28px;
+            border: 3px solid #ec83ad;
+            border-radius: 24px;
+            background: #f8c8db;
+            box-shadow: 0 8px 20px rgba(80, 150, 180, 0.18);
+        }
+
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            border-color: #9edbf0;
+            background: rgba(255, 255, 255, 0.84);
+        }
+
+        .clear-form {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font: 600 25px 'Fredoka', sans-serif;
+        }
+
+        .panel-copy {
+            margin: 0 0 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field[hidden] {
+            display: none;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 2px solid #e99abb;
+            border-radius: 10px;
+            background: #fff;
+            color: #40595b;
+            font: 500 15px 'Quicksand', sans-serif;
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #55b5d2;
+            outline-offset: 3px;
+        }
+
+        button {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 17px;
+            border: 0;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            cursor: pointer;
+            font: 600 16px 'Fredoka', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+        .clear-button {
+            border: 2px solid rgba(255, 255, 255, 0.88);
+            background: #bd6c91;
+            box-shadow: 0 4px 0 #995271;
+        }
+
+        .clear-button:hover {
+            background: #a9587d;
+        }
+
+        .status {
+            margin: 18px 0 0;
+            padding: 12px 14px;
+            border: 2px solid rgba(101, 185, 87, 0.55);
+            border-radius: 12px;
+            background: #eff9e9;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .status.error {
+            border-color: #e99abb;
+            background: #fff0f6;
+            color: #9f3d67;
+        }
+
+        .list-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .list-heading h2 {
+            margin: 0;
+        }
+
+        .count {
+            color: #4d8e67;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .ends {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #4d8e67;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .node-chain {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 0;
+            margin: 0;
+            padding: 16px;
+            border: 2px dashed #9edbf0;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.68);
+            list-style: none;
+        }
+
+        .node-chain li {
+            display: flex;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .node {
+            display: block;
+            max-width: min(100%, 190px);
+            overflow-wrap: anywhere;
+            padding: 11px 14px;
+            border: 2px solid #9edbf0;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 0 rgba(85, 191, 229, 0.24);
+            font-weight: 700;
+        }
+
+        .node-chain li:not(:last-child)::after {
+            content: '→';
+            padding: 0 9px;
+            color: #55b5d2;
+            font: 600 20px 'Fredoka', sans-serif;
+        }
+
+        .empty-state {
+            margin: 0;
+            padding: 24px 14px;
+            border: 2px dashed #e99abb;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.55);
+            color: #6b6870;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .peek-result {
+            margin: 18px 0 0;
+            padding: 14px 16px;
+            border: 2px solid rgba(101, 185, 87, 0.55);
+            border-radius: 12px;
+            background: #eff9e9;
+            color: #315d50;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .peek-value {
+            display: block;
+            margin-top: 4px;
+            overflow-wrap: anywhere;
+            font: 600 22px 'Fredoka', sans-serif;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #388bb0;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @media (max-width: 720px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            main {
+                width: 88%;
+                padding-top: 40px;
+            }
+
+            .workspace {
+                margin-top: 28px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body class="works-tool-page">
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
+            <li><a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
+            <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACT</span></a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="page-motifs" aria-hidden="true">
+            <span class="motif-spiral">꩜</span>
+            <span class="motif-star">✦</span>
+            <span class="motif-flower">🌸</span>
+        </div>
+        <h1>QUEUE &amp; DEQUE</h1>
+        <p class="intro">
+            Try a linked-list queue (first in, first out) or a deque, where you
+            can add and remove values at either end.
+        </p>
+
+        <div class="workspace">
+            <section class="panel" aria-labelledby="operation-title">
+                <h2 id="operation-title">Operations</h2>
+                <p class="panel-copy">Choose a structure and run one operation at a time.</p>
+                <form method="post">
+                    {% for item in values %}
+                    <input type="hidden" name="items" value="{{ item }}">
+                    {% endfor %}
+
+                    <label class="field" for="structure">
+                        Data structure
+                        <select id="structure" name="structure">
+                            <option value="queue" {% if structure == 'queue' %}selected{% endif %}>Queue</option>
+                            <option value="deque" {% if structure == 'deque' %}selected{% endif %}>Deque</option>
+                        </select>
+                    </label>
+
+                    <label class="field" for="action">
+                        Choose an operation
+                        <select id="action" name="action" required>
+                            <optgroup label="Queue operations" data-structure="queue">
+                                <option value="enqueue" {% if action == 'enqueue' %}selected{% endif %}>Enqueue at rear</option>
+                                <option value="dequeue" {% if action == 'dequeue' %}selected{% endif %}>Dequeue from front</option>
+                                <option value="peek" {% if action == 'peek' %}selected{% endif %}>Peek at front</option>
+                            </optgroup>
+                            <optgroup label="Deque operations" data-structure="deque">
+                                <option value="add_front" {% if action == 'add_front' %}selected{% endif %}>Add at front</option>
+                                <option value="add_rear" {% if action == 'add_rear' %}selected{% endif %}>Add at rear</option>
+                                <option value="remove_front" {% if action == 'remove_front' %}selected{% endif %}>Remove from front</option>
+                                <option value="remove_rear" {% if action == 'remove_rear' %}selected{% endif %}>Remove from rear</option>
+                                <option value="peek_front" {% if action == 'peek_front' %}selected{% endif %}>Peek at front</option>
+                                <option value="peek_rear" {% if action == 'peek_rear' %}selected{% endif %}>Peek at rear</option>
+                            </optgroup>
+                        </select>
+                    </label>
+
+                    <label class="field" id="value-field" for="value">
+                        Value
+                        <input id="value" name="value" type="text" maxlength="80" autocomplete="off" placeholder="Enter a value">
+                    </label>
+
+                    <button type="submit">Run operation</button>
+                </form>
+
+                {% if message %}
+                <p class="status {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
+            </section>
+
+            <section class="panel result-panel" aria-labelledby="structure-title">
+                <div class="list-heading">
+                    <h2 id="structure-title">Your {{ 'Queue' if structure == 'queue' else 'Deque' }}</h2>
+                    <span class="count">{{ values|length }} {% if values|length == 1 %}node{% else %}nodes{% endif %}</span>
+                </div>
+
+                {% if values %}
+                <div class="ends"><span>Front</span><span>Rear</span></div>
+                <ol class="node-chain" aria-label="{{ structure|capitalize }} from front to rear" role="list">
+                    {% for item in values %}
+                    <li><span class="node">{{ item }}</span></li>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                <p class="empty-state">This {{ structure }} is empty.</p>
+                {% endif %}
+
+                {% if peek_result %}
+                <p class="peek-result" role="status">
+                    {{ peek_result[0] }}
+                    <span class="peek-value">{{ peek_result[1] }}</span>
+                </p>
+                {% endif %}
+
+                <form class="clear-form" method="post">
+                    <input type="hidden" name="structure" value="{{ structure }}">
+                    <button class="clear-button" type="submit" name="action" value="clear">
+                        Clear {{ 'Queue' if structure == 'queue' else 'Deque' }} Nodes
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <a class="back-link" href="{{ url_for('works') }}">Back to My Works</a>
+    </main>
+
+    <script>
+        const structureSelect = document.getElementById('structure');
+        const actionSelect = document.getElementById('action');
+        const valueField = document.getElementById('value-field');
+        const valueInput = document.getElementById('value');
+        const structureTitle = document.getElementById('structure-title');
+        const actionGroups = [...actionSelect.querySelectorAll('optgroup')];
+
+        function updateOperationFields() {
+            const structure = structureSelect.value;
+            structureTitle.textContent = `Your ${structure === 'queue' ? 'Queue' : 'Deque'}`;
+            actionGroups.forEach((group) => {
+                group.hidden = group.dataset.structure !== structure;
+                group.disabled = group.hidden;
+            });
+
+            if (actionSelect.selectedOptions[0].parentElement.disabled) {
+                actionSelect.selectedIndex = structure === 'queue' ? 0 : 3;
+            }
+
+            const needsValue = ['enqueue', 'add_front', 'add_rear'].includes(actionSelect.value);
+            valueField.hidden = !needsValue;
+            valueInput.required = needsValue;
+        }
+
+        structureSelect.addEventListener('change', updateOperationFields);
+        actionSelect.addEventListener('change', updateOperationFields);
+        updateOperationFields();
+    </script>
+</body>
+</html>

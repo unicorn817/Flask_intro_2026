@@ -510,7 +510,7 @@
             <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
             <li><a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
             <li><a href="{{ url_for('works') }}" aria-current="page"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
-            <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACTS</span></a></li>
+            <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACT</span></a></li>
         </ul>
     </nav>
 
@@ -605,6 +605,24 @@
                 <h2>Stack Applications</h2>
                 <p>Explore four stack activities, from LIFO operations to reversing strings.</p>
                 <a href="{{ url_for('stack_page') }}" class="work-button">Explore Stacks</a>
+            </div>
+
+            <div class="work-card">
+                <h2>Queue &amp; Deque</h2>
+                <p>Practice FIFO queue operations and add or remove nodes at either end of a deque.</p>
+                <a href="{{ url_for('queue_deque_page') }}" class="work-button">Explore Queue &amp; Deque</a>
+            </div>
+
+            <div class="work-card">
+                <h2>Sorting Algorithms</h2>
+                <p>Try five sorting algorithms and compare their results and operation counts.</p>
+                <a href="{{ url_for('sorting_page') }}" class="work-button">Explore Sorting</a>
+            </div>
+
+            <div class="work-card">
+                <h2>Binary Tree</h2>
+                <p>Build a tree, explore its traversals, search for values, and delete nodes.</p>
+                <a href="{{ url_for('binary_tree_page') }}" class="work-button">Explore Binary Tree</a>
             </div>
 
 

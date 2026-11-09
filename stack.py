@@ -66,7 +66,7 @@ class Stack(Generic[T]):
 _DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _TOKEN_RE = re.compile(
     r"\s*(?:(\d+(?:\.\d*)?|\.\d+)([eE][+-]?\d+)?|"
-    r"([A-Za-z_]\w*)|(\*\*|//|[()+\-*/%]))"
+    r"([A-Za-z_]\w*)|(\*\*|//|[()+\-*/%^]))"
 )
 _PRECEDENCE = {
     "+": 1,
@@ -78,8 +78,9 @@ _PRECEDENCE = {
     "u+": 3,
     "u-": 3,
     "**": 4,
+    "^": 4,
 }
-_RIGHT_ASSOCIATIVE = {"**", "u+", "u-"}
+_RIGHT_ASSOCIATIVE = {"**", "^", "u+", "u-"}
 
 
 def _pop_required(stack: Stack[T]) -> T:
@@ -240,7 +241,7 @@ def evaluate_postfix(
     """Evaluate a postfix expression without using Python's eval()."""
     values: Stack[float] = Stack()
     variable_values = variables or {}
-    operators = {"+", "-", "*", "/", "//", "%", "**", "u+", "u-"}
+    operators = {"+", "-", "*", "/", "//", "%", "**", "^", "u+", "u-"}
 
     for token in expression.split():
         if token in operators:

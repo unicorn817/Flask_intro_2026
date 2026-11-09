@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7b6d9">
+    <title>Sorting Algorithms | Jezrel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(1080px, 90%);
+            margin: 0 auto;
+            padding: 52px 0 68px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(38px, 6vw, 52px);
+        }
+
+        .intro {
+            max-width: 720px;
+            margin: 16px auto 0;
+            padding: 13px 22px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 24px;
+            margin-top: 36px;
+            text-align: left;
+        }
+
+        .panel {
+            min-width: 0;
+            padding: 28px;
+            border: 3px solid #ec83ad;
+            border-radius: 24px;
+            background: #f8c8db;
+            box-shadow: 0 8px 20px rgba(80, 150, 180, 0.18);
+        }
+
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            border-color: #9edbf0;
+            background: rgba(255, 255, 255, 0.84);
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font: 600 25px 'Fredoka', sans-serif;
+        }
+
+        .panel-copy {
+            margin: 0 0 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 12px;
+            border: 2px solid #e99abb;
+            border-radius: 10px;
+            background: #fff;
+            color: #40595b;
+            font: 500 15px 'Quicksand', sans-serif;
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #55b5d2;
+            outline-offset: 3px;
+        }
+
+        .hint {
+            margin: -7px 0 16px;
+            color: #526568;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        button {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 17px;
+            border: 0;
+            border-radius: 12px;
+            background: #65b957;
+            box-shadow: 0 4px 0 #4d9d43;
+            color: #fff;
+            cursor: pointer;
+            font: 600 16px 'Fredoka', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #55a94a;
+        }
+
+        .status {
+            margin: 18px 0 0;
+            padding: 12px 14px;
+            border: 2px solid rgba(101, 185, 87, 0.55);
+            border-radius: 12px;
+            background: #eff9e9;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .status.error {
+            border-color: #e99abb;
+            background: #fff0f6;
+            color: #9f3d67;
+        }
+
+        .result-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .result-heading h2 {
+            margin: 0;
+        }
+
+        .result-order {
+            color: #4d8e67;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .empty-state,
+        .sorted-values {
+            margin: 0;
+            padding: 18px;
+            border: 2px dashed #9edbf0;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.68);
+        }
+
+        .empty-state {
+            color: #6b6870;
+            font-size: 15px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .sorted-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            list-style: none;
+        }
+
+        .sorted-values li {
+            padding: 9px 13px;
+            border: 2px solid #9edbf0;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 0 rgba(85, 191, 229, 0.2);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .algorithm-info {
+            margin-top: 22px;
+            padding: 17px;
+            border: 2px solid rgba(233, 135, 179, 0.42);
+            border-radius: 16px;
+            background: linear-gradient(120deg, #fbe1ed, #fff0d0);
+        }
+
+        .algorithm-name {
+            margin-bottom: 7px !important;
+            color: #4d8e67;
+            font: 600 18px 'Fredoka', sans-serif;
+        }
+
+        .algorithm-info p {
+            margin: 0;
+            line-height: 1.55;
+        }
+
+        .algorithm-description {
+            margin-bottom: 12px !important;
+            font-size: 14px;
+        }
+
+        .complexities {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .complexity {
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .complexity-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #4d8e67;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .complexity-value {
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .best-for {
+            margin-top: 12px !important;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .metric {
+            padding: 13px;
+            border: 2px solid rgba(101, 185, 87, 0.35);
+            border-radius: 12px;
+            background: #eff9e9;
+        }
+
+        .metric-label {
+            display: block;
+            margin-bottom: 3px;
+            color: #4d8e67;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            font: 600 22px 'Fredoka', sans-serif;
+        }
+
+        .clear-form {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .clear-button {
+            background: #bd6c91;
+            box-shadow: 0 4px 0 #995271;
+        }
+
+        .clear-button:hover {
+            background: #a9587d;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #388bb0;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @media (max-width: 720px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 18px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            main {
+                width: 88%;
+                padding-top: 40px;
+            }
+
+            .workspace {
+                margin-top: 28px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .complexities {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body class="works-tool-page">
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="{{ url_for('index') }}"><span class="nav-icon nav-icon-home" aria-hidden="true"></span><span>HOME</span></a></li>
+            <li><a href="{{ url_for('profile') }}"><span class="nav-icon nav-icon-profile" aria-hidden="true"></span><span>PROFILE</span></a></li>
+            <li><a href="{{ url_for('works') }}" aria-current="page"><span class="nav-icon nav-icon-works" aria-hidden="true"></span><span>WORKS</span></a></li>
+            <li><a href="{{ url_for('contact') }}"><span class="nav-icon nav-icon-contacts" aria-hidden="true"></span><span>CONTACT</span></a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="page-motifs" aria-hidden="true">
+            <span class="motif-spiral">꩜</span>
+            <span class="motif-star">✦</span>
+            <span class="motif-flower">🌸</span>
+        </div>
+        <h1>SORTING ALGORITHMS</h1>
+        <p class="intro">
+            Compare Bubble, Selection, Insertion, Merge, and Quick sort.
+            Choose an order and see how many comparisons and moves each run takes.
+        </p>
+
+        <div class="workspace">
+            <section class="panel" aria-labelledby="input-title">
+                <h2 id="input-title">Sorting controls</h2>
+                <p class="panel-copy">Enter up to 100 whole numbers, then choose an algorithm and order.</p>
+                <form method="post">
+                    <label class="field" for="values">
+                        Numbers to sort
+                        <input id="values" name="values" type="text" maxlength="1000" value="{{ raw_values }}" placeholder="Example: 8, 3, 5, 1" autocomplete="off" required>
+                    </label>
+                    <p class="hint">Separate numbers with commas or spaces. Negative numbers and duplicates are okay.</p>
+
+                    <label class="field" for="algorithm">
+                        Sorting algorithm
+                        <select id="algorithm" name="algorithm">
+                            {% for key, details in algorithms.items() %}
+                            <option value="{{ key }}"
+                                data-description="{{ details.description }}"
+                                data-best="{{ details.best }}"
+                                data-time="{{ details.time }}"
+                                data-space="{{ details.space }}"
+                                data-stable="{{ details.stable }}"
+                                {% if algorithm == key %}selected{% endif %}>
+                                {{ details.title }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label class="field" for="order">
+                        Sort order
+                        <select id="order" name="order">
+                            <option value="ascending" {% if order == 'ascending' %}selected{% endif %}>Ascending (smallest to largest)</option>
+                            <option value="descending" {% if order == 'descending' %}selected{% endif %}>Descending (largest to smallest)</option>
+                        </select>
+                    </label>
+
+                    <button type="submit">Sort numbers</button>
+                </form>
+
+                {% if message %}
+                <p class="status {{ message_type }}" role="status">{{ message }}</p>
+                {% endif %}
+            </section>
+
+            <section class="panel result-panel" aria-labelledby="result-title">
+                <div class="result-heading">
+                    <h2 id="result-title">Sorted result</h2>
+                    {% if result %}
+                    <span class="result-order">{{ result.order|capitalize }}</span>
+                    {% endif %}
+                </div>
+
+                {% if result %}
+                <p class="panel-copy">{{ result.algorithm }} sorted {{ result['values']|length }} numbers.</p>
+                <ol class="sorted-values" aria-label="Sorted numbers" role="list">
+                    {% for value in result['values'] %}
+                    <li>{{ value }}</li>
+                    {% endfor %}
+                </ol>
+                <div class="metrics" aria-label="Sorting operations">
+                    <div class="metric">
+                        <span class="metric-label">Comparisons</span>
+                        <span class="metric-value">{{ result.comparisons }}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Swaps / moves</span>
+                        <span class="metric-value">{{ result.moves }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <p class="empty-state">Your sorted numbers and operation counts will appear here.</p>
+                {% endif %}
+
+                <div class="algorithm-info" aria-live="polite">
+                    <p class="algorithm-name" id="algorithm-name">{{ algorithms[algorithm].title }}</p>
+                    <p class="algorithm-description" id="algorithm-description">{{ algorithms[algorithm].description }}</p>
+                    <div class="complexities">
+                        <p class="complexity">
+                            <span class="complexity-label">Time</span>
+                            <span class="complexity-value" id="algorithm-time">{{ algorithms[algorithm].time }}</span>
+                        </p>
+                        <p class="complexity">
+                            <span class="complexity-label">Space</span>
+                            <span class="complexity-value" id="algorithm-space">{{ algorithms[algorithm].space }}</span>
+                        </p>
+                        <p class="complexity">
+                            <span class="complexity-label">Stable</span>
+                            <span class="complexity-value" id="algorithm-stable">{{ algorithms[algorithm].stable }}</span>
+                        </p>
+                    </div>
+                    <p class="algorithm-description best-for">
+                        <strong>Best for:</strong> <span id="algorithm-best">{{ algorithms[algorithm].best }}</span>
+                    </p>
+                </div>
+
+                <form class="clear-form" method="post">
+                    <input type="hidden" name="action" value="clear">
+                    <input type="hidden" id="clear-algorithm" name="algorithm" value="{{ algorithm }}">
+                    <input type="hidden" id="clear-order" name="order" value="{{ order }}">
+                    <button class="clear-button" type="submit">Clear input and result</button>
+                </form>
+            </section>
+        </div>
+
+        <a class="back-link" href="{{ url_for('works') }}">Back to My Works</a>
+    </main>
+
+    <script>
+        const algorithmSelect = document.getElementById('algorithm');
+        const algorithmName = document.getElementById('algorithm-name');
+        const algorithmDescription = document.getElementById('algorithm-description');
+        const algorithmBest = document.getElementById('algorithm-best');
+        const algorithmTime = document.getElementById('algorithm-time');
+        const algorithmSpace = document.getElementById('algorithm-space');
+        const algorithmStable = document.getElementById('algorithm-stable');
+
+        function updateAlgorithmDetails() {
+            const option = algorithmSelect.selectedOptions[0];
+            algorithmName.textContent = option.textContent.trim();
+            algorithmDescription.textContent = option.dataset.description;
+            algorithmBest.textContent = option.dataset.best;
+            algorithmTime.textContent = option.dataset.time;
+            algorithmSpace.textContent = option.dataset.space;
+            algorithmStable.textContent = option.dataset.stable;
+            document.getElementById('clear-algorithm').value = algorithmSelect.value;
+            document.getElementById('clear-order').value = document.getElementById('order').value;
+        }
+
+        algorithmSelect.addEventListener('change', updateAlgorithmDetails);
+        document.getElementById('order').addEventListener('change', updateAlgorithmDetails);
+        updateAlgorithmDetails();
+    </script>
+</body>
+</html>
